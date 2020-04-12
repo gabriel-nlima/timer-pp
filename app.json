@@ -1,8 +1,8 @@
 {
   "name": "timerpp",
-  "displayName": "timerpp",
+  "displayName": "Timer++",
   "expo": {
-    "name": "timerpp",
+    "name": "Timer++",
     "slug": "timerpp",
     "version": "1.0.0",
     "platforms": [
