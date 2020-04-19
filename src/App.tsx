@@ -48,15 +48,12 @@ export default function App() {
 				const msgIndex = msgs.findIndex((m) => m.active);
 				if (msgIndex > -1) {
 					// Desativa a mensagem atual e ativa a próxima
-					msgs[msgIndex] = { ...msg, active: false };
+					msgs[msgIndex].active = false;
 					if (msgIndex + 1 <= messages.length - 1) {
-						msgs[msgIndex + 1] = {
-							...msgs[msgIndex + 1],
-							active: true,
-						};
+						msgs[msgIndex + 1].active = true;
 					} else {
 						// Chegou no final do array, ativa a primeira mensagem (com menor tempo)
-						msgs[0] = { ...msgs[0], active: true };
+						msgs[0].active = true;
 					}
 				}
 				setMessages(msgs);
@@ -74,12 +71,11 @@ export default function App() {
 			: undefined
 	);
 
-	console.log(messages);
 	return (
 		<View style={styles.container}>
 			{isHermes() && <Text>Engine: Hermes</Text>}
 			<Text>{currentMessage?.msg}</Text>
-			<TimerDisplay paused={!isPlaying} />
+			<TimerDisplay playing={isPlaying} />
 			{msgsHistory.map((message, idx) => (
 				<Text key={idx}>{message.msg}</Text>
 			))}

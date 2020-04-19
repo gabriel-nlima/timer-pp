@@ -3,17 +3,16 @@ import { Text, View } from "react-native";
 import useInterval from "./hooks/useInterval";
 
 interface Props {
-	paused?: boolean;
-	step?: number;
+	playing: boolean;
 }
-const TimerDisplay: React.FC<Props> = ({ paused }) => {
+const TimerDisplay: React.FC<Props> = ({ playing }) => {
 	const [time, setTime] = useState(0);
 
 	useInterval(
 		() => {
 			setTime((prevTime) => prevTime + 1);
 		},
-		paused ? undefined : 1000
+		playing ? 1000 : undefined
 	);
 
 	const timeString = useMemo(
