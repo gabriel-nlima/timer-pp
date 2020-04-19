@@ -3,3 +3,6 @@ export type MessageType = {
 	active: boolean;
 	msg?: string;
 };
+export interface MessageHistory extends MessageType {
+	time: number;
+}

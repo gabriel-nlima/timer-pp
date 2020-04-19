@@ -1,44 +1,37 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
-import TimerDisplay from "./TimerDisplay";
+import { StyleSheet, Text, View } from "react-native";
+import Timer from "./Timer";
 import { MessageType } from "./types";
 import useInterval from "./hooks/useInterval";
+import DisplayTime from "./components/DisplayTime";
+import MessageForm from "./MessageForm";
 declare const global: any;
 const isHermes = () => global.HermesInternal !== undefined;
 console.log(`Hermes enabled: ${isHermes()}`);
 
 export default function App() {
-	const [messages, setMessages] = useState<MessageType[]>([
-		{ step: 20, active: true, msg: "EXERCICIO" },
-		{ step: 10, active: false, msg: "CORRIDA PARADA" },
-	]);
-	const [msgsHistory, setMsgsHistory] = useState<MessageType[]>([]);
+	const [messages, setMessages] = useState<MessageType[]>([]);
 	const [currentMessage, setCurrentMessage] = useState<
 		MessageType | undefined
 	>(messages.find((m) => m.active));
 
+	const [msgsHistory, setMsgsHistory] = useState<MessageType[]>([]);
+
 	const [isPlaying, setIsPlaying] = useState(false);
+	const [loops, setLoops] = useState<number[]>([]);
 
 	// Ativa a mensagem com menor tempo ao iniciar/se n houver mensagem ativa
-	// Ordena o array do menor para maior
+	// TODO não deixar ter mais de uma mensagem ativa
 	useEffect(() => {
-		const sortedMsgs = messages.sort((a, b) => a.step - b.step);
-		if (!sortedMsgs.find((m) => m.active)) {
-			sortedMsgs[0].active = true;
+		const msgs = Array.from(messages);
+		if (!msgs.find((m) => m.active) && msgs.length > 0) {
+			msgs[0].active = true;
+			setMessages(msgs);
 		}
-		setMessages(sortedMsgs);
 	}, [messages]);
 
-	// Setta a mensagem ativa e adiciona no histórico
 	useEffect(() => {
-		const activeMsg = messages.find((m) => m.active);
-		if (activeMsg) {
-			setMsgsHistory((prev) => [
-				{ ...activeMsg, msg: `${activeMsg.msg} (${prev.length + 1})` },
-				...prev,
-			]);
-		}
-		setCurrentMessage(activeMsg);
+		!currentMessage && setCurrentMessage(messages.find((m) => m.active));
 	}, [messages]);
 
 	const setNextActiveMsg = useCallback(
@@ -49,11 +42,22 @@ export default function App() {
 				if (msgIndex > -1) {
 					// Desativa a mensagem atual e ativa a próxima
 					msgs[msgIndex].active = false;
+
+					setMsgsHistory((prev) => [
+						{
+							...msgs[msgIndex],
+							msg: `${msgs[msgIndex].msg} (${prev.length + 1})`,
+						},
+						...prev,
+					]);
+
 					if (msgIndex + 1 <= messages.length - 1) {
 						msgs[msgIndex + 1].active = true;
+						setCurrentMessage(msgs[msgIndex + 1]);
 					} else {
 						// Chegou no final do array, ativa a primeira mensagem (com menor tempo)
 						msgs[0].active = true;
+						setCurrentMessage(msgs[0]);
 					}
 				}
 				setMessages(msgs);
@@ -62,6 +66,9 @@ export default function App() {
 		[messages]
 	);
 
+	const addMessage = useCallback((msg: MessageType) => {
+		setMessages((prev) => [...prev, msg]);
+	}, []);
 	useInterval(
 		() => {
 			currentMessage && setNextActiveMsg(currentMessage);
@@ -74,15 +81,19 @@ export default function App() {
 	return (
 		<View style={styles.container}>
 			{isHermes() && <Text>Engine: Hermes</Text>}
+			<MessageForm setMessage={addMessage} playing={isPlaying} />
 			<Text>{currentMessage?.msg}</Text>
-			<TimerDisplay playing={isPlaying} />
+			<Timer
+				setIsPlaying={setIsPlaying}
+				setLoops={setLoops}
+				playing={isPlaying}
+			/>
 			{msgsHistory.map((message, idx) => (
 				<Text key={idx}>{message.msg}</Text>
 			))}
-			<Button
-				onPress={() => setIsPlaying(!isPlaying)}
-				title={isPlaying ? "Pause" : "Play"}
-			/>
+			{loops.map((loop, idx) => (
+				<DisplayTime key={idx} time={loop} />
+			))}
 		</View>
 	);
 }
