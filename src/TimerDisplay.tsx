@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, memo } from "react";
 import { Text, View } from "react-native";
 import useInterval from "./hooks/useInterval";
 
@@ -28,4 +28,4 @@ const TimerDisplay: React.FC<Props> = ({ paused }) => {
 	);
 };
 
-export default TimerDisplay;
+export default memo(TimerDisplay);
