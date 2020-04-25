@@ -5,11 +5,12 @@ import DisplayTime from './components/DisplayTime'
 
 interface Props {
   playing: boolean
-  setIsPlaying: (playing: boolean) => void
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>
   setLoops: React.Dispatch<React.SetStateAction<number[]>>
+  resetAll: () => void
 }
 
-const Timer: React.FC<Props> = ({ playing, setIsPlaying, setLoops }) => {
+const Timer: React.FC<Props> = ({ playing, setIsPlaying, setLoops, resetAll }) => {
   const [time, setTime] = useState(0)
 
   useInterval(
@@ -21,7 +22,7 @@ const Timer: React.FC<Props> = ({ playing, setIsPlaying, setLoops }) => {
 
   const resetTimer = () => {
     setTime(0)
-    setIsPlaying(false)
+    resetAll()
   }
 
   return (

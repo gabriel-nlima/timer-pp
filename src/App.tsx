@@ -33,7 +33,7 @@ export default function App() {
   // Ativa a mensagem com menor tempo ao iniciar/se n houver mensagem ativa
   // TODO não deixar ter mais de uma mensagem ativa
   useEffect(() => {
-    const msgs = Array.from(messages)
+    const msgs = [...messages]
     if (!msgs.find(m => m.active) && msgs.length > 0) {
       msgs[0].active = true
       setMessages(msgs)
@@ -47,18 +47,19 @@ export default function App() {
   const setNextActiveMsg = useCallback(
     (msg: MessageType) => {
       if (msg.active) {
-        const msgs = Array.from(messages)
+        const msgs = [...messages]
         const msgIndex = msgs.findIndex(m => m.active)
         if (msgIndex > -1) {
           // Desativa a mensagem atual e ativa a próxima
           msgs[msgIndex].active = false
 
-          setMsgsHistory(prev => [
+          // Adiciona a atual no histórico
+          setMsgsHistory(prevMsgsHistory => [
             {
               ...msgs[msgIndex],
-              msg: `${msgs[msgIndex].msg} (${prev.length + 1})`,
+              msg: `${msgs[msgIndex].msg} (${prevMsgsHistory.length + 1})`,
             },
-            ...prev,
+            ...prevMsgsHistory,
           ])
 
           if (msgIndex + 1 <= messages.length - 1) {
@@ -79,19 +80,43 @@ export default function App() {
   const addMessage = useCallback((msg: MessageType) => {
     setMessages(prev => [...prev, msg])
   }, [])
+
+  // Intervalo da mensagem atual
   useInterval(
     () => {
       currentMessage && setNextActiveMsg(currentMessage)
     },
-    isPlaying && currentMessage && currentMessage.active ? currentMessage.step * 1000 : undefined,
+    isPlaying && currentMessage?.active ? currentMessage.step * 1000 : undefined,
   )
+
+  const resetAll = useCallback(() => {
+    setIsPlaying(false)
+    setLoops([])
+    setMsgsHistory([])
+
+    // Setta apenas a primeira mensagem para ativa
+    const msgs = messages.map(m => {
+      if (m.active) {
+        m.active = false
+      }
+      return m
+    })
+    msgs[0].active = true
+    setCurrentMessage(msgs[0])
+    setMessages(msgs)
+  }, [messages])
 
   return (
     <View style={styles.container}>
       {isHermes() && <Text>Engine: Hermes</Text>}
       <MessageForm setMessage={addMessage} playing={isPlaying} />
       <Text>{currentMessage?.msg}</Text>
-      <Timer setIsPlaying={setIsPlaying} setLoops={setLoops} playing={isPlaying} />
+      <Timer
+        setIsPlaying={setIsPlaying}
+        setLoops={setLoops}
+        playing={isPlaying}
+        resetAll={resetAll}
+      />
       {msgsHistory.map((message, idx) => (
         <Text key={idx}>{message.msg}</Text>
       ))}

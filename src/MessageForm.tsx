@@ -1,6 +1,7 @@
 import React, { memo, useState } from 'react'
-import { Text, TextInput, View, Button, Switch } from 'react-native'
+import { View, Button } from 'react-native'
 import { MessageType } from './types'
+import { Input } from './components/Inputs'
 
 interface Props {
   setMessage: (msg: MessageType) => void
@@ -11,23 +12,13 @@ interface Props {
 const MessageForm: React.FC<Props> = ({ message, playing, setMessage }) => {
   const [data, setData] = useState(message)
 
-  const inputHandler = (value: string, key: keyof MessageType) => {
+  const inputHandler = (value: string, key: keyof MessageType | string) => {
     setData(
       prev =>
         ({
           ...prev,
           [key]: key === 'step' ? Number(value) : value,
         } as MessageType),
-    )
-  }
-
-  const toggleActive = () => {
-    setData(
-      prevData =>
-        prevData && {
-          ...prevData,
-          active: prevData.active ? !prevData.active : true,
-        },
     )
   }
 
@@ -39,28 +30,20 @@ const MessageForm: React.FC<Props> = ({ message, playing, setMessage }) => {
 
   return (
     <View>
-      <Text>Intervalo (em segundos):</Text>
-      <TextInput
-        value={data && data.step ? `${data.step}` : ''}
-        placeholder="Intervalo"
+      <Input
+        label="Intervalo (em segundos)"
+        keyProp="step"
+        value={data?.step}
         keyboardType="number-pad"
-        onChangeText={text => inputHandler(text, 'step')}
+        inputHandler={inputHandler}
         editable={!playing}
       />
-      <Text>Mensagem:</Text>
-      <TextInput
-        value={data && data.msg ? `${data.msg}` : ''}
-        placeholder="Mensagem"
-        onChangeText={text => inputHandler(text, 'msg')}
+      <Input
+        label="Mensagem"
+        keyProp="msg"
+        value={data?.msg}
+        inputHandler={inputHandler}
         editable={!playing}
-      />
-      <Switch
-        trackColor={{ false: '#767577', true: '#81b0ff' }}
-        thumbColor={data && data.active ? '#f5dd4b' : '#f4f3f4'}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleActive}
-        value={data && data.active}
-        disabled={playing}
       />
       <Button onPress={handleSubmit} title="Adicionar" disabled={playing} />
     </View>
