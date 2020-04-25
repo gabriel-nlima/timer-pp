@@ -1,0 +1,30 @@
+{
+  "editor.formatOnSave": true,
+  "[java]": {
+    "editor.formatOnSave": false
+  },
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": false
+  },
+  "[typescript]": {
+    "editor.formatOnSave": false
+  },
+  "[typescriptreact]": {
+    "editor.formatOnSave": false
+  },
+  // Roda fix do ESLint ao salvar
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  // Opcional mas importante: se tiver a extensão do prettier ativa para outras linguagens, como
+  // CSS e HTML, desativa ela para JS já que a formatação será feita pelo ESLint
+  "prettier.disableLanguages": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "workbench.colorCustomizations": {
+    "titleBar.border": "#1890ff"
+  },
+  "npm.packageManager": "yarn"
+}

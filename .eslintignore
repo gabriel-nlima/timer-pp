@@ -1,0 +1,7 @@
+build/*
+__tests__/*
+.expo/*
+android/*
+ios/*
+node_modules/*
+web-build/*
