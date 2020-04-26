@@ -6,8 +6,9 @@ Timer com funcionalidades extras feito com [React Native](https://reactnative.de
 
 ### Cronometro e Timer
 
-Cronômetro normal
-Timer regressivo [TODO]
+- Cronômetro normal
+
+- Timer regressivo [TODO]
 
 ### Alertas
 
