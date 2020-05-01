@@ -33,6 +33,7 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
       })
       alertsCpy[0].active = true
       setAlerts(alertsCpy)
+      setCurrentAlert(alertsCpy[0])
       setAlertMsg(undefined)
       dispatch({ type: StateActions.PAUSE })
     }
@@ -41,8 +42,8 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
   // Ativa a mensagem com menor tempo ao iniciar/se n houver mensagem ativa
   // TODO não deixar ter mais de uma mensagem ativa
   useEffect(() => {
-    const msgs = [...alerts]
-    if (!msgs.find(m => m.active) && msgs.length > 0) {
+    if (!alerts.find(m => m.active) && alerts.length > 0) {
+      const msgs = [...alerts]
       msgs[0].active = true
       setAlerts(msgs)
     }
@@ -80,7 +81,7 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
     () => {
       setNextActiveAlert()
     },
-    isPlaying && currentAlert?.active ? currentAlert.step * 1000 : undefined,
+    isPlaying ? currentAlert.step * 1000 : undefined,
   )
 
   return (

@@ -38,7 +38,7 @@ export const Input: React.FC<InputProps> = ({
   <>
     <Text>{label}</Text>
     <TextInput
-      value={value ? `${value}` : undefined}
+      value={`${value || ''}`}
       placeholder={placeholder || label}
       onChangeText={text => inputHandler(text, keyProp)}
       {...props}
