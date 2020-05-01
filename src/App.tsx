@@ -31,15 +31,6 @@ export default function App() {
           <AlertHistory />
         </AlertProvider>
       </ControllerProvider>
-      {/* <Timer
-        setIsPlaying={setIsPlaying}
-        setLoops={setLoops}
-        isPlaying={isPlaying}
-        resetAll={resetAll}
-      /> */}
-      {/* {loops.map((loop, idx) => (
-        <DisplayTime key={idx} time={loop} />
-      ))} */}
     </View>
   )
 }
