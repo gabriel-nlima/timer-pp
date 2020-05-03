@@ -1,36 +1,43 @@
-import React, { useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import Timer from './main/Timer/Timer'
+import React from 'react'
+import { Provider as PaperProvider } from 'react-native-paper'
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import { NavigationContainer } from '@react-navigation/native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { ControllerProvider } from './controllerContext'
-import AlertProvider from './main/Alert'
-import AlertForm from './main/Alert/AlertForm'
-import AlertHistory from './main/Alert/AlertHistory'
+import Timer from './main/Timer/Timer'
+import { mainTheme } from './theme'
+import { TimerModes } from './types/navigation'
 
-declare const global: any
-const isHermes = () => global.HermesInternal !== undefined
+const Drawer = createDrawerNavigator()
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
-
-export default function App() {
-  const [alertMsg, setAlertMsg] = useState<string | undefined>()
+const App: React.FC = () => {
   return (
-    <View style={styles.container}>
-      {isHermes() && <Text>Engine: Hermes</Text>}
-      {alertMsg && <Text>{alertMsg}</Text>}
+    <SafeAreaProvider>
       <ControllerProvider>
-        <Timer />
-        <AlertProvider setAlertMsg={setAlertMsg}>
-          <AlertForm />
-          <AlertHistory />
-        </AlertProvider>
+        <PaperProvider theme={mainTheme}>
+          <NavigationContainer>
+            <Drawer.Navigator initialRouteName="Cron">
+              <Drawer.Screen
+                name="Cron"
+                component={Timer}
+                initialParams={{ mode: TimerModes.CRON }}
+              />
+              <Drawer.Screen
+                name="Timer"
+                component={Timer}
+                initialParams={{ mode: TimerModes.TIMER }}
+              />
+              <Drawer.Screen
+                name="Countdown"
+                component={Timer}
+                initialParams={{ mode: TimerModes.COUNTDOWN }}
+              />
+            </Drawer.Navigator>
+          </NavigationContainer>
+        </PaperProvider>
       </ControllerProvider>
-    </View>
+    </SafeAreaProvider>
   )
 }
+
+export default App
