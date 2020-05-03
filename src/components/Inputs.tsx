@@ -1,12 +1,6 @@
 import React from 'react'
-import {
-  Text,
-  TextInput,
-  StyleProp,
-  TextStyle,
-  NativeSyntheticEvent,
-  TextInputKeyPressEventData,
-} from 'react-native'
+import { Text, StyleProp, TextStyle } from 'react-native'
+import { TextInput } from 'react-native-paper'
 
 interface InputProps {
   label: string
@@ -33,6 +27,7 @@ interface InputProps {
     | 'twitter'
     | 'web-search'
   onKeyPress?: (e: any, key: string) => void
+  onSubmitEditing?: (e: any, key: string) => void
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -42,15 +37,20 @@ export const Input: React.FC<InputProps> = ({
   placeholder,
   inputHandler,
   onKeyPress,
+  onSubmitEditing,
+  editable,
   ...props
 }) => (
   <>
     <Text>{label}</Text>
     <TextInput
+      mode="outlined"
       value={`${value || ''}`}
       placeholder={placeholder || label}
       onChangeText={text => inputHandler(text, keyProp)}
       onKeyPress={e => onKeyPress && onKeyPress(e.nativeEvent.key, keyProp)}
+      onSubmitEditing={e => onSubmitEditing && onSubmitEditing(e.nativeEvent.text, keyProp)}
+      disabled={!editable}
       {...props}
     />
   </>
