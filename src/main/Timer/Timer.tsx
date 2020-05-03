@@ -66,14 +66,12 @@ const Timer: React.FC = () => {
     setLoops([])
   }, [dispatch])
 
-  // TODO O que fazer quando apagar os campos do segundos e outros estiverem preenchidos
-  // Limpar o useRef excedents ao apagar campos
-  // Play/Reset limpa os inputs?
+  // TODO Play/Reset limpa os inputs?
   const inputHandler = (value: string, key: string) => {
     if (value.length > 2) {
       switch (key) {
         case 'seconds': {
-          excedents.current += value[0]
+          excedents.current += value.substring(0, value.length - 2)
           const minutes = excedents.current
           if (minutes.length > 2) {
             inputHandler(minutes, 'minutes')
@@ -110,6 +108,48 @@ const Timer: React.FC = () => {
     }
   }
 
+  const onKeyPress = (e: any) => {
+    if (e === 'Backspace') {
+      setSelectedTime(prev => {
+        let hours = ''
+        let hourToMinute = ''
+        let minutes = ''
+        let minuteToSeconts = ''
+        let seconds = ''
+
+        if (prev.hours.length > 1) {
+          // Esse ; é por causa do prettier...
+          ;[hours, hourToMinute] = [...prev.hours]
+        } else {
+          ;[hours, hourToMinute] = ['', prev.hours[0] ? prev.hours[0] : '']
+        }
+
+        if (prev.minutes.length > 1) {
+          ;[minutes, minuteToSeconts] = [...prev.minutes]
+        } else {
+          ;[minutes, minuteToSeconts] = ['', prev.minutes[0] ? prev.minutes[0] : '']
+        }
+
+        if (prev.seconds.length >= 1) {
+          if (minuteToSeconts.length === 1) {
+            seconds = minuteToSeconts + prev.seconds
+          } else {
+            ;[seconds] = [prev.seconds[0]]
+          }
+        }
+        if (seconds.length <= 1) {
+          excedents.current = ''
+        }
+
+        return {
+          hours,
+          minutes: hourToMinute.length ? hourToMinute + minutes : minutes,
+          seconds: minuteToSeconts.length === 1 ? seconds : prev.seconds,
+        }
+      })
+    }
+  }
+
   return (
     <View>
       <DisplayTime time={time} />
@@ -136,6 +176,7 @@ const Timer: React.FC = () => {
         keyboardType="number-pad"
         inputHandler={inputHandler}
         editable={!isPlaying}
+        onKeyPress={onKeyPress}
       />
       <Switch
         trackColor={{ false: '#767577', true: '#81b0ff' }}

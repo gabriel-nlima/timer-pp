@@ -1,5 +1,12 @@
 import React from 'react'
-import { Text, TextInput, StyleProp, TextStyle } from 'react-native'
+import {
+  Text,
+  TextInput,
+  StyleProp,
+  TextStyle,
+  NativeSyntheticEvent,
+  TextInputKeyPressEventData,
+} from 'react-native'
 
 interface InputProps {
   label: string
@@ -25,6 +32,7 @@ interface InputProps {
     | 'name-phone-pad'
     | 'twitter'
     | 'web-search'
+  onKeyPress?: (e: any, key: string) => void
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -33,6 +41,7 @@ export const Input: React.FC<InputProps> = ({
   keyProp,
   placeholder,
   inputHandler,
+  onKeyPress,
   ...props
 }) => (
   <>
@@ -41,6 +50,7 @@ export const Input: React.FC<InputProps> = ({
       value={`${value || ''}`}
       placeholder={placeholder || label}
       onChangeText={text => inputHandler(text, keyProp)}
+      onKeyPress={e => onKeyPress && onKeyPress(e.nativeEvent.key, keyProp)}
       {...props}
     />
   </>
