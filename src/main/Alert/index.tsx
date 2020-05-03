@@ -81,7 +81,7 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
     () => {
       setNextActiveAlert()
     },
-    isPlaying ? currentAlert.step * 1000 : undefined,
+    isPlaying && currentAlert ? currentAlert.step * 1000 : undefined,
   )
 
   return (
