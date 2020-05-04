@@ -1,6 +1,9 @@
 import React from 'react'
-import { Text, StyleProp, TextStyle } from 'react-native'
+import { StyleProp, TextStyle, StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-paper'
+import styled from 'styled-components/native'
+import { TimeObj } from '../main/Timer/Timer'
+import { fontSizes, mainColors } from '../theme'
 
 interface InputProps {
   label: string
@@ -9,6 +12,7 @@ interface InputProps {
   inputHandler: (value: any, key: string) => void
   value?: any
   placeholder?: string
+  mode?: 'flat' | 'outlined'
   testID?: string
   style?: StyleProp<TextStyle>
   keyboardAppearance?: 'default' | 'light' | 'dark'
@@ -32,26 +36,100 @@ interface InputProps {
 
 export const Input: React.FC<InputProps> = ({
   label,
+  mode,
   value,
   keyProp,
-  placeholder,
   inputHandler,
   onKeyPress,
   onSubmitEditing,
   editable,
   ...props
 }) => (
-  <>
-    <Text>{label}</Text>
-    <TextInput
-      mode="outlined"
-      value={`${value || ''}`}
-      placeholder={placeholder || label}
-      onChangeText={text => inputHandler(text, keyProp)}
-      onKeyPress={e => onKeyPress && onKeyPress(e.nativeEvent.key, keyProp)}
-      onSubmitEditing={e => onSubmitEditing && onSubmitEditing(e.nativeEvent.text, keyProp)}
-      disabled={!editable}
-      {...props}
-    />
-  </>
+  <TextInput
+    label={label}
+    mode={mode || 'outlined'}
+    value={`${value || ''}`}
+    placeholder=""
+    onChangeText={text => inputHandler(text, keyProp)}
+    onKeyPress={e => onKeyPress && onKeyPress(e.nativeEvent.key, keyProp)}
+    onSubmitEditing={e => onSubmitEditing && onSubmitEditing(e.nativeEvent.text, keyProp)}
+    disabled={!editable}
+    editable={editable}
+    underlineColor={mainColors.lightGrey}
+    {...props}
+  />
 )
+
+const TimeText = styled.Text`
+  font-size: ${fontSizes.titles};
+  color: ${mainColors.lightGrey};
+`
+
+const { timerInput } = StyleSheet.create({
+  timerInput: {
+    height: 32,
+    width: 40,
+    backgroundColor: mainColors.darkGrey,
+    textAlign: 'right',
+    marginLeft: 15,
+  },
+})
+
+export const InputTimeGroup = styled.View`
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: row;
+`
+
+interface InputTimeProps {
+  selectedTime: TimeObj
+  isPlaying: boolean
+  inputHandler: (value: any, key: string) => void
+  onKeyPress?: (e: any, key: string) => void
+}
+export const InputTime: React.FC<InputTimeProps> = ({
+  selectedTime,
+  isPlaying,
+  inputHandler,
+  onKeyPress,
+}) => {
+  return (
+    <InputTimeGroup>
+      <Input
+        mode="flat"
+        label=""
+        keyProp="hours"
+        value={selectedTime.hours}
+        keyboardType="number-pad"
+        inputHandler={inputHandler}
+        editable={false}
+        style={timerInput}
+      />
+      {!!selectedTime.hours.length && <TimeText>h</TimeText>}
+      <Input
+        mode="flat"
+        label=""
+        keyProp="minutes"
+        value={selectedTime.minutes}
+        keyboardType="number-pad"
+        inputHandler={inputHandler}
+        editable={false}
+        style={timerInput}
+      />
+      {!!selectedTime.minutes.length && <TimeText>m</TimeText>}
+      <Input
+        mode="flat"
+        label=""
+        keyProp="seconds"
+        value={selectedTime.seconds}
+        keyboardType="number-pad"
+        inputHandler={inputHandler}
+        editable={!isPlaying}
+        onKeyPress={onKeyPress}
+        style={timerInput}
+      />
+      <TimeText>s</TimeText>
+    </InputTimeGroup>
+  )
+}

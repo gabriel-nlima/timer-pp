@@ -1,12 +1,13 @@
 import React, { useState, memo, useMemo, useCallback } from 'react'
 import { RouteProp } from '@react-navigation/native'
 import useInterval from '../../hooks/useInterval'
-import DisplayTime from '../../components/DisplayTime'
+import DisplayTime, { DisplayLoop } from '../../components/DisplayTime'
 import { useController } from '../../controllerContext'
 import { States, StateActions } from '../../types/state'
-import { MainContainer } from '../../components/Containers'
+import { MainContainer, Container } from '../../components/Containers'
 import TimerForm from './TimerForm'
 import { DrawerScreens } from '../../types/navigation'
+import { MainTitle } from '../../components/Texts'
 
 export interface TimeObj {
   hours: string
@@ -51,6 +52,9 @@ const Timer: React.FC<Props> = () => {
 
   return (
     <MainContainer>
+      <Container align="center">
+        <MainTitle>Timer</MainTitle>
+      </Container>
       <DisplayTime time={time} />
       <TimerForm
         setMaxTime={setMaxTime}
@@ -60,7 +64,7 @@ const Timer: React.FC<Props> = () => {
         onClickLoop={() => setLoops(prev => [time, ...prev])}
       />
       {loops.map((loop, idx) => (
-        <DisplayTime key={idx} time={loop} />
+        <DisplayLoop key={idx} time={loop} />
       ))}
     </MainContainer>
   )

@@ -1,9 +1,8 @@
 import React, { memo, useMemo, useCallback, useState, useEffect } from 'react'
-import { Button } from 'react-native'
 import { useController } from '../controllerContext'
 import { States, StateActions } from '../types/state'
-import { Container } from '../components/Containers'
 import useInterval from '../hooks/useInterval'
+import { CustomButton, ButtonGroup, PlayPauseBtn } from '../components/Buttons'
 
 type Props = {
   onPlay?: () => void
@@ -59,14 +58,23 @@ const Controls: React.FC<Props> = ({ onPlay, onPause, onReset, onClickLoop, setT
   }, [dispatch, onReset])
 
   return (
-    <Container>
-      <Button
+    <ButtonGroup>
+      <CustomButton compact onPress={onPressReset}>
+        Zerar
+      </CustomButton>
+      <PlayPauseBtn
         onPress={() => (isPlaying ? onPressPause() : onPressPlay())}
-        title={isStarted ? `${isStarted}` : isPlaying ? 'Pausar' : 'Vai'}
-      />
-      <Button onPress={onPressReset} title="Zerar" />
-      {!!onClickLoop && <Button onPress={onClickLoop} disabled={!isPlaying} title="Volta" />}
-    </Container>
+        isStarted={isStarted}
+        isPlaying={isPlaying}
+      >
+        {isStarted ? `${isStarted}` : undefined}
+      </PlayPauseBtn>
+      {!!onClickLoop && (
+        <CustomButton compact onPress={onClickLoop} disabled={!isPlaying}>
+          Volta
+        </CustomButton>
+      )}
+    </ButtonGroup>
   )
 }
 

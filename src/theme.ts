@@ -14,6 +14,8 @@ export const fontSizes = {
   subtitles: '14px',
   titles: '16px',
   timer: '68px',
+  listItem: '32px',
+  mainTitle: '38px',
 }
 
 export const mainTheme: Theme = {

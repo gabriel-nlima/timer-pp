@@ -1,12 +1,13 @@
 import React, { useState, memo, useMemo, useCallback } from 'react'
 import { RouteProp } from '@react-navigation/native'
 import useInterval from '../../hooks/useInterval'
-import DisplayTime from '../../components/DisplayTime'
+import DisplayTime, { DisplayLoop } from '../../components/DisplayTime'
 import { useController } from '../../controllerContext'
 import { States } from '../../types/state'
-import { MainContainer } from '../../components/Containers'
+import { MainContainer, Container } from '../../components/Containers'
 import { DrawerScreens } from '../../types/navigation'
 import Controls from '../Controls'
+import { MainTitle } from '../../components/Texts'
 
 export interface TimeObj {
   hours: string
@@ -35,10 +36,13 @@ const Cron: React.FC<Props> = () => {
 
   return (
     <MainContainer>
+      <Container align="center">
+        <MainTitle>Cronômetro</MainTitle>
+      </Container>
       <DisplayTime time={time} />
       <Controls onReset={resetTimer} onClickLoop={() => setLoops(prev => [time, ...prev])} />
       {loops.map((loop, idx) => (
-        <DisplayTime key={idx} time={loop} />
+        <DisplayLoop key={idx} time={loop} />
       ))}
     </MainContainer>
   )

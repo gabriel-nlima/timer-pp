@@ -3,7 +3,7 @@ import { Container } from '../../components/Containers'
 import { TimeObj } from './Timer'
 import { useController } from '../../controllerContext'
 import { States } from '../../types/state'
-import { Input } from '../../components/Inputs'
+import { InputTime } from '../../components/Inputs'
 import Controls from '../Controls'
 
 interface Props {
@@ -13,7 +13,13 @@ interface Props {
   onClickLoop: () => void
   setMaxTime?: React.Dispatch<React.SetStateAction<number>>
 }
-const TimerForm: React.FC<Props> = ({ isReverse, setTime, setMaxTime, ...controlProps }) => {
+const TimerForm: React.FC<Props> = ({
+  isReverse,
+  setTime,
+  setMaxTime,
+  resetTimer,
+  ...controlProps
+}) => {
   const [selectedTime, setSelectedTime] = useState<TimeObj>({
     hours: '',
     minutes: '',
@@ -123,37 +129,21 @@ const TimerForm: React.FC<Props> = ({ isReverse, setTime, setMaxTime, ...control
   }
 
   return (
-    <Container>
+    <Container align="center">
       {!isPlaying && (
-        <>
-          <Input
-            label="Horas"
-            keyProp="hours"
-            value={selectedTime.hours}
-            keyboardType="number-pad"
-            inputHandler={inputHandler}
-            editable={false}
-          />
-          <Input
-            label="Minutos"
-            keyProp="minutes"
-            value={selectedTime.minutes}
-            keyboardType="number-pad"
-            inputHandler={inputHandler}
-            editable={false}
-          />
-          <Input
-            label="segundos"
-            keyProp="seconds"
-            value={selectedTime.seconds}
-            keyboardType="numeric"
-            inputHandler={inputHandler}
-            editable={!isPlaying}
-            onKeyPress={onKeyPress}
-          />
-        </>
+        <InputTime
+          inputHandler={inputHandler}
+          selectedTime={selectedTime}
+          onKeyPress={onKeyPress}
+          isPlaying={isPlaying}
+        />
       )}
-      <Controls onPlay={onPlay} {...controlProps} setTime={!isReverse ? setTime : undefined} />
+      <Controls
+        onPlay={onPlay}
+        onReset={resetTimer}
+        {...controlProps}
+        setTime={!isReverse ? setTime : undefined}
+      />
     </Container>
   )
 }
