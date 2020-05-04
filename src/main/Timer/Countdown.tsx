@@ -19,9 +19,8 @@ type Props = {
   route: TimerScreenProps
 }
 
-const Timer: React.FC<Props> = () => {
+const Countdown: React.FC<Props> = () => {
   const [time, setTime] = useState(0)
-  const [maxTime, setMaxTime] = useState(0)
   const [loops, setLoops] = useState<number[]>([])
   const [{ status }, dispatch] = useController()
 
@@ -30,15 +29,11 @@ const Timer: React.FC<Props> = () => {
   useInterval(
     () => {
       setTime(prevTime => {
-        // if (isReverse && prevTime - 1 === 0) {
-        //   dispatch({ type: StateActions.PAUSE })
-        //   return 0
-        // }
-        if (maxTime > 0 && maxTime === prevTime + 1) {
+        if (prevTime - 1 === 0) {
           dispatch({ type: StateActions.PAUSE })
-          return maxTime
+          return 0
         }
-        return prevTime + 1
+        return prevTime - 1
       })
     },
     isPlaying ? 1000 : undefined,
@@ -53,9 +48,8 @@ const Timer: React.FC<Props> = () => {
     <MainContainer>
       <DisplayTime time={time} />
       <TimerForm
-        setMaxTime={setMaxTime}
         setTime={setTime}
-        isReverse={false}
+        isReverse
         resetTimer={resetTimer}
         onClickLoop={() => setLoops(prev => [time, ...prev])}
       />
@@ -66,4 +60,4 @@ const Timer: React.FC<Props> = () => {
   )
 }
 
-export default memo(Timer)
+export default memo(Countdown)

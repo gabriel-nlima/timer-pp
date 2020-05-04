@@ -7,6 +7,8 @@ import { ControllerProvider } from './controllerContext'
 import Timer from './main/Timer/Timer'
 import { mainTheme } from './theme'
 import { TimerModes } from './types/navigation'
+import Cron from './main/Timer/Cron'
+import Countdown from './main/Timer/Countdown'
 
 const Drawer = createDrawerNavigator()
 
@@ -19,7 +21,7 @@ const App: React.FC = () => {
             <Drawer.Navigator initialRouteName="Cron">
               <Drawer.Screen
                 name="Cron"
-                component={Timer}
+                component={Cron}
                 initialParams={{ mode: TimerModes.CRON }}
               />
               <Drawer.Screen
@@ -29,7 +31,7 @@ const App: React.FC = () => {
               />
               <Drawer.Screen
                 name="Countdown"
-                component={Timer}
+                component={Countdown}
                 initialParams={{ mode: TimerModes.COUNTDOWN }}
               />
             </Drawer.Navigator>

@@ -1,17 +1,19 @@
 import React, { useState, memo, useMemo, useCallback, useRef } from 'react'
-import { Button } from 'react-native'
 import { Container } from '../../components/Containers'
 import { TimeObj } from './Timer'
 import { useController } from '../../controllerContext'
-import { States, StateActions } from '../../types/state'
+import { States } from '../../types/state'
 import { Input } from '../../components/Inputs'
+import Controls from '../Controls'
 
 interface Props {
   isReverse: boolean
   setTime: React.Dispatch<React.SetStateAction<number>>
-  setMaxTime: React.Dispatch<React.SetStateAction<number>>
+  resetTimer: () => void
+  onClickLoop: () => void
+  setMaxTime?: React.Dispatch<React.SetStateAction<number>>
 }
-const TimerForm: React.FC<Props> = ({ isReverse, setTime, setMaxTime }) => {
+const TimerForm: React.FC<Props> = ({ isReverse, setTime, setMaxTime, ...controlProps }) => {
   const [selectedTime, setSelectedTime] = useState<TimeObj>({
     hours: '',
     minutes: '',
@@ -19,7 +21,7 @@ const TimerForm: React.FC<Props> = ({ isReverse, setTime, setMaxTime }) => {
   })
   const excedents = useRef('')
 
-  const [{ status }, dispatch] = useController()
+  const [{ status }] = useController()
   const isPlaying = useMemo(() => status === States.PLAYING, [status])
 
   const hasATimeSelected = useMemo(
@@ -28,14 +30,13 @@ const TimerForm: React.FC<Props> = ({ isReverse, setTime, setMaxTime }) => {
     [selectedTime],
   )
 
-  const onPlay = useCallback(() => {
+  const onPlay = useCallback(async () => {
     if (hasATimeSelected) {
       const { hours, minutes, seconds } = selectedTime
       const totalInSeconds = Number(hours) * 60 * 60 + Number(minutes) * 60 + Number(seconds)
-      isReverse ? setTime(totalInSeconds) : setMaxTime(totalInSeconds)
-      dispatch({ type: isPlaying ? StateActions.PAUSE : StateActions.PLAY })
+      isReverse ? setTime(totalInSeconds) : setMaxTime && setMaxTime(totalInSeconds)
     }
-  }, [hasATimeSelected, selectedTime, setMaxTime, setTime, isReverse, dispatch, isPlaying])
+  }, [hasATimeSelected, selectedTime, setMaxTime, setTime, isReverse])
 
   // TODO Play/Reset limpa os inputs?
   const inputHandler = (value: string, key: string) => {
@@ -123,32 +124,36 @@ const TimerForm: React.FC<Props> = ({ isReverse, setTime, setMaxTime }) => {
 
   return (
     <Container>
-      <Input
-        label="Horas"
-        keyProp="hours"
-        value={selectedTime.hours}
-        keyboardType="number-pad"
-        inputHandler={inputHandler}
-        editable={false}
-      />
-      <Input
-        label="Minutos"
-        keyProp="minutes"
-        value={selectedTime.minutes}
-        keyboardType="number-pad"
-        inputHandler={inputHandler}
-        editable={false}
-      />
-      <Input
-        label="segundos"
-        keyProp="seconds"
-        value={selectedTime.seconds}
-        keyboardType="numeric"
-        inputHandler={inputHandler}
-        editable={!isPlaying}
-        onKeyPress={onKeyPress}
-      />
-      <Button onPress={onPlay} title="Vai" disabled={!hasATimeSelected} />
+      {!isPlaying && (
+        <>
+          <Input
+            label="Horas"
+            keyProp="hours"
+            value={selectedTime.hours}
+            keyboardType="number-pad"
+            inputHandler={inputHandler}
+            editable={false}
+          />
+          <Input
+            label="Minutos"
+            keyProp="minutes"
+            value={selectedTime.minutes}
+            keyboardType="number-pad"
+            inputHandler={inputHandler}
+            editable={false}
+          />
+          <Input
+            label="segundos"
+            keyProp="seconds"
+            value={selectedTime.seconds}
+            keyboardType="numeric"
+            inputHandler={inputHandler}
+            editable={!isPlaying}
+            onKeyPress={onKeyPress}
+          />
+        </>
+      )}
+      <Controls onPlay={onPlay} {...controlProps} setTime={!isReverse ? setTime : undefined} />
     </Container>
   )
 }
