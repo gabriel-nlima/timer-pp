@@ -7,14 +7,14 @@ Timer com funcionalidades extras feito com [React Native](https://reactnative.de
 ### Cronometro e Timer
 
 - Cronômetro normal
-
-- Timer regressivo [TODO]
+- Timer/Temporizador
+- Countdown/Contagem Regressiva
 
 ### Alertas
 
 Defina alertas ou lembretes com intervalo (em segundos) para marcar suas atividades.
 
-Crie sequências e rotinas em poucos passos. Ideal para marcar treinos com exercicios intervalados (por exemplo: HIIT), controle de tempo em refeições e tarefas repetitivas. O smartphone vibra quando um alerta é ativado [TODO]
+Crie sequências e rotinas em poucos passos. Ideal para marcar treinos com exercícios intervalados (por exemplo: HIIT), controle de tempo em refeições e tarefas repetitivas. O smartphone vibra quando um alerta é ativado [TODO]
 
 Também inclui:
 
@@ -26,13 +26,13 @@ Também inclui:
 
 Criando uma rotina para fazer um exercício por 20 segundos e depois descansar por 10 segundos:
 
-1. Adicione o alerta do exércio: Em Intervalo, escolha os segundos (20);
+1. Adicione o alerta do exercício: Em Intervalo, escolha os segundos (20);
 2. Adicione a mensagem do alerta: Em Mensagem, digite uma mensagem, por exemplo: "FLEXÕES!";
 3. Toque em Adicionar;
 4. Repita os passos 1, 2 e 3, para adicionar 10 segundos de descanso, com a mensagem "DESCANSAR!".
 5. Pronto! Aperte o Play e treine.
 
-É importante adicionar os alertas na sequência desejada. Você pode definir um tempo máximo para executar a rotina [TODO] ou alternar para um timer regressivo [TODO].
+É importante adicionar os alertas na sequência desejada. Você pode definir um tempo máximo para executar a rotina ou alternar para um timer regressivo.
 
 ## Requisitos
 
