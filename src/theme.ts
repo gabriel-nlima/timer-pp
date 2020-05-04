@@ -13,7 +13,7 @@ export const fontSizes = {
   text: '12px',
   subtitles: '14px',
   titles: '16px',
-  timer: '28px',
+  timer: '68px',
 }
 
 export const mainTheme: Theme = {

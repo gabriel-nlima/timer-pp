@@ -1,17 +1,19 @@
 import React, { useMemo, memo } from 'react'
-import { Text, View } from 'react-native'
+import { TimerText } from './Texts'
+import { Container } from './Containers'
 
 interface Props {
   time: number
+  indeterminate: boolean
 }
 
-const DisplayTime: React.FC<Props> = ({ time }) => {
+const DisplayTime: React.FC<Props> = ({ time, indeterminate = true }) => {
   const timeString = useMemo(() => new Date(time * 1000).toISOString().substr(11, 8), [time])
 
   return (
-    <View>
-      <Text>{timeString}</Text>
-    </View>
+    <Container align="center">
+      <TimerText>{timeString}</TimerText>
+    </Container>
   )
 }
 

@@ -11,5 +11,13 @@ export const MainContainer = styled(SafeAreaView)`
   align-items: stretch;
   background-color: ${mainColors.darkGrey};
 `
+
+type ContainerProps = {
+  align?: 'center' | 'stretch' | 'flex-start' | 'flex-end'
+}
 // Container para child components
-export const Container = styled.View``
+export const Container = styled.View<ContainerProps>`
+  display: flex;
+  justify-content: center;
+  align-items: ${({ align }) => align || 'stretch'};
+`
