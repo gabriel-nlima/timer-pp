@@ -1,6 +1,6 @@
 import React, { useState, memo, useMemo, useCallback, useRef } from 'react'
 import { Container } from '../../components/Containers'
-import { TimeObj } from './Timer'
+import { TimeObj } from './types'
 import { useController } from '../../controllerContext'
 import { States } from '../../types/state'
 import { InputTime } from '../../components/Inputs'

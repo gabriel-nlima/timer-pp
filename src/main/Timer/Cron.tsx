@@ -1,26 +1,13 @@
 import React, { useState, memo, useMemo, useCallback } from 'react'
-import { RouteProp } from '@react-navigation/native'
 import useInterval from '../../hooks/useInterval'
 import DisplayTime, { DisplayLoop } from '../../components/DisplayTime'
 import { useController } from '../../controllerContext'
 import { States } from '../../types/state'
 import { MainContainer, Container } from '../../components/Containers'
-import { DrawerScreens } from '../../types/navigation'
 import Controls from '../Controls'
 import { MainTitle } from '../../components/Texts'
 
-export interface TimeObj {
-  hours: string
-  minutes: string
-  seconds: string
-}
-
-type TimerScreenProps = RouteProp<DrawerScreens, 'Cron'>
-type Props = {
-  route: TimerScreenProps
-}
-
-const Cron: React.FC<Props> = () => {
+const Cron: React.FC = () => {
   const [time, setTime] = useState(0)
   const [loops, setLoops] = useState<number[]>([])
   const [{ status }] = useController()

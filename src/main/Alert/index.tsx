@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, createContext, useMemo } from 'react'
 import useInterval from '../../hooks/useInterval'
-import { AlertType } from '../../types/alert'
+import { AlertType } from './types'
 import { useController } from '../../controllerContext'
 import { States, StateActions } from '../../types/state'
 

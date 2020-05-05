@@ -1,6 +1,6 @@
 import React, { useState, useEffect, memo } from 'react'
 import { Text } from 'react-native'
-import { AlertType } from '../../types/alert'
+import { AlertType } from './types'
 import { useAlertHandler } from '.'
 import { useController } from '../../controllerContext'
 import { States } from '../../types/state'
