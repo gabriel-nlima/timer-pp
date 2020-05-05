@@ -143,6 +143,7 @@ const TimerForm: React.FC<Props> = ({
         onReset={resetTimer}
         {...controlProps}
         setTime={!isReverse ? setTime : undefined}
+        btnDisabled={!hasATimeSelected}
       />
     </Container>
   )

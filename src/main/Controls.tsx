@@ -10,9 +10,17 @@ type Props = {
   onReset?: () => void
   onClickLoop?: () => void
   setTime?: React.Dispatch<React.SetStateAction<number>>
+  btnDisabled?: boolean
 }
 
-const Controls: React.FC<Props> = ({ onPlay, onPause, onReset, onClickLoop, setTime }) => {
+const Controls: React.FC<Props> = ({
+  onPlay,
+  onPause,
+  onReset,
+  onClickLoop,
+  setTime,
+  btnDisabled,
+}) => {
   const [isStarted, setIsStarted] = useState<number | undefined>()
   const [{ status }, dispatch] = useController()
 
@@ -66,6 +74,7 @@ const Controls: React.FC<Props> = ({ onPlay, onPause, onReset, onClickLoop, setT
         onPress={() => (isPlaying ? onPressPause() : onPressPlay())}
         isStarted={isStarted}
         isPlaying={isPlaying}
+        disabled={btnDisabled}
       >
         {isStarted ? `${isStarted}` : undefined}
       </PlayPauseBtn>

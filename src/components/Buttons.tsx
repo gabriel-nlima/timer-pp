@@ -14,14 +14,15 @@ export const CustomButton = styled(Button)``
 
 type PlayPauseBtnProps = {
   isPlaying: boolean
-  circle?: boolean
   onPress?: () => void
-  isStarted?: number | undefined
+  isStarted?: number
+  disabled?: boolean
 }
 export const PlayPauseBtn: React.FC<PlayPauseBtnProps> = ({
   children,
   isStarted,
   isPlaying,
+  disabled,
   ...props
 }) => {
   return (
@@ -33,6 +34,7 @@ export const PlayPauseBtn: React.FC<PlayPauseBtnProps> = ({
       contentStyle={{ height: 60, width: 60 }}
       style={{ borderRadius: 70 }}
       labelStyle={{ fontSize: 20 }}
+      disabled={!!isStarted || disabled}
     >
       {children}
     </CustomButton>
