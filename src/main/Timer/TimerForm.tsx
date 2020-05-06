@@ -1,5 +1,5 @@
 /* eslint-disable prefer-destructuring */
-import React, { useState, memo, useMemo, useCallback, useRef } from 'react'
+import React, { useState, memo, useMemo, useCallback } from 'react'
 import { Container } from '../../components/Containers'
 import { TimeObj } from './types'
 import { useController } from '../../controllerContext'
@@ -26,7 +26,6 @@ const TimerForm: React.FC<Props> = ({
     minutes: '',
     seconds: '',
   })
-  const excedents = useRef('')
 
   const [{ status }] = useController()
   const isPlaying = useMemo(() => status === States.PLAYING, [status])
@@ -97,44 +96,50 @@ const TimerForm: React.FC<Props> = ({
           seconds = minuteToSeconts + seconds[0]
         }
       }
-      console.log(seconds, minutes, hours)
 
       setSelectedTime({ seconds, minutes, hours })
-    } else if (value.length > 1) {
-      switch (key) {
-        case 'seconds': {
-          excedents.current += value.substring(0, value.length - 2)
-          const minutes = excedents.current
-          if (minutes.length > 2) {
-            inputHandler(minutes, 'minutes')
-            setSelectedTime(prev => ({
-              ...prev,
-              [key]: value.substring(value.length - 2, value.length),
-            }))
-          } else {
-            setSelectedTime(prev => ({
-              ...prev,
-              minutes,
-              [key]: value.substring(value.length - 2, value.length),
-            }))
-          }
-          break
-        }
-        case 'minutes': {
-          inputHandler(value.substring(0, value.length - 2), 'hours')
-          setSelectedTime(prev => ({
-            ...prev,
-            [key]: value.substring(value.length - 2, value.length),
-          }))
-          break
-        }
-        default:
-          // hours
-          setSelectedTime(prev => ({
-            ...prev,
-            [key]: value.substring(value.length - 2, value.length),
-          }))
+    } else if (value.length > 2) {
+      // inserindo
+      let seconds = ''
+      let secondsToMinutes = ''
+      let minutes = ''
+      let minutesToHours = ''
+      let hours = ''
+
+      // Por aqui o value.length sempre será 3
+      // os segundos são os dois ultimos
+      // o minuto é o primeiro
+      seconds = value.substring(value.length - 2, value.length)
+      secondsToMinutes = value[0]
+
+      // Passa os segundos para minutos...
+      if (selectedTime.minutes.length === 0) {
+        // Não tinha minuto, logo o primeiro segundo é o primeiro minuto
+        minutes = secondsToMinutes
+      } else if (selectedTime.minutes.length === 1) {
+        // Já tinha um minuto, junta com o primeiro segundo
+        minutes = selectedTime.minutes[0] + secondsToMinutes
+      } else if (selectedTime.minutes.length === 2) {
+        // já tem dois em minutos, passa o primeiro para horas
+        // e guarda os dois ultimos como segundos
+        minutesToHours = selectedTime.minutes[0]
+        minutes = selectedTime.minutes[1] + secondsToMinutes
       }
+
+      // Passa os minutos para horas
+      if (selectedTime.hours.length === 0) {
+        // Não tinha hora, logo, o primeiro minuto excedente é a primeira hora
+        hours = minutesToHours
+      } else if (selectedTime.hours.length === 1) {
+        // Já tinha uma hora, junta com o primeiro minuto
+        hours = selectedTime.hours[0] + minutesToHours
+      } else if (selectedTime.hours.length === 2) {
+        // já tinha dois em horas, guarda o ultimo com o primeiro minuto
+        // a outra hora é perdida
+        hours = selectedTime.hours[1] + minutesToHours
+      }
+
+      setSelectedTime({ seconds, minutes, hours })
     } else {
       setSelectedTime(prev => ({ ...prev, [key]: value }))
     }
