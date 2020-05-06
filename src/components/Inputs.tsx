@@ -2,8 +2,8 @@ import React from 'react'
 import { StyleProp, TextStyle, StyleSheet } from 'react-native'
 import { TextInput } from 'react-native-paper'
 import styled from 'styled-components/native'
-import { TimeObj } from '../main/Timer/Timer'
 import { fontSizes, mainColors } from '../theme'
+import { TimeObj } from '../main/Timer/types'
 
 interface InputProps {
   label: string

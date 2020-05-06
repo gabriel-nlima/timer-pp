@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import React, { useState, memo, useMemo, useCallback, useRef } from 'react'
 import { Container } from '../../components/Containers'
 import { TimeObj } from './types'
@@ -46,7 +47,60 @@ const TimerForm: React.FC<Props> = ({
 
   // TODO Play/Reset limpa os inputs?
   const inputHandler = (value: string, key: string) => {
-    if (value.length > 2) {
+    // esta apagando os segundos quando tem minutos ou horas...
+    // move a hora pra minutos, minutos pra segundos
+    if (
+      value.length <= 1 &&
+      (selectedTime.hours.length || selectedTime.minutes.length) &&
+      key === 'seconds'
+    ) {
+      let hours = ''
+      let hourToMinute = ''
+      let minutes = ''
+      let minuteToSeconts = ''
+      let seconds = ''
+
+      // passa a hora para os minutos...
+      if (selectedTime.hours.length) {
+        if (selectedTime.hours.length === 2) {
+          hours = selectedTime.hours[0]
+          hourToMinute = selectedTime.hours[1]
+        } else if (selectedTime.hours.length === 1) {
+          hours = ''
+          hourToMinute = selectedTime.hours[0]
+        }
+      }
+
+      // passa os minutos para os segundos
+      if (selectedTime.minutes.length) {
+        if (selectedTime.minutes.length === 2) {
+          minutes = selectedTime.minutes[0]
+          minuteToSeconts = selectedTime.minutes[1]
+        } else if (selectedTime.minutes.length === 1) {
+          minutes = ''
+          minuteToSeconts = selectedTime.minutes[0]
+        }
+      }
+
+      if (selectedTime.seconds.length > 0) {
+        seconds = selectedTime.seconds
+      }
+      if (hourToMinute.length > 0) {
+        if (minutes.length > 0) {
+          minutes = hourToMinute + minutes
+        } else {
+          minutes = hourToMinute
+        }
+      }
+      if (minuteToSeconts.length > 0) {
+        if (seconds.length > 0) {
+          seconds = minuteToSeconts + seconds[0]
+        }
+      }
+      console.log(seconds, minutes, hours)
+
+      setSelectedTime({ seconds, minutes, hours })
+    } else if (value.length > 1) {
       switch (key) {
         case 'seconds': {
           excedents.current += value.substring(0, value.length - 2)
@@ -86,57 +140,10 @@ const TimerForm: React.FC<Props> = ({
     }
   }
 
-  const onKeyPress = (e: any) => {
-    if (e === 'Backspace') {
-      setSelectedTime(prev => {
-        let hours = ''
-        let hourToMinute = ''
-        let minutes = ''
-        let minuteToSeconts = ''
-        let seconds = ''
-
-        if (prev.hours.length > 1) {
-          // Esse ; é por causa do prettier...
-          ;[hours, hourToMinute] = [...prev.hours]
-        } else {
-          ;[hours, hourToMinute] = ['', prev.hours[0] ? prev.hours[0] : '']
-        }
-
-        if (prev.minutes.length > 1) {
-          ;[minutes, minuteToSeconts] = [...prev.minutes]
-        } else {
-          ;[minutes, minuteToSeconts] = ['', prev.minutes[0] ? prev.minutes[0] : '']
-        }
-
-        if (prev.seconds.length >= 1) {
-          if (minuteToSeconts.length === 1) {
-            seconds = minuteToSeconts + prev.seconds
-          } else {
-            ;[seconds] = [prev.seconds[0]]
-          }
-        }
-        if (seconds.length <= 1) {
-          excedents.current = ''
-        }
-
-        return {
-          hours,
-          minutes: hourToMinute.length ? hourToMinute + minutes : minutes,
-          seconds: minuteToSeconts.length === 1 ? seconds : prev.seconds,
-        }
-      })
-    }
-  }
-
   return (
     <Container align="center">
       {!isPlaying && (
-        <InputTime
-          inputHandler={inputHandler}
-          selectedTime={selectedTime}
-          onKeyPress={onKeyPress}
-          isPlaying={isPlaying}
-        />
+        <InputTime inputHandler={inputHandler} selectedTime={selectedTime} isPlaying={isPlaying} />
       )}
       <Controls
         onPlay={onPlay}
