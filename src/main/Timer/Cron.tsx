@@ -3,7 +3,7 @@ import useInterval from '../../hooks/useInterval'
 import DisplayTime, { DisplayLoop } from '../../components/DisplayTime'
 import { useController } from '../../controllerContext'
 import { States } from '../../types/state'
-import { MainContainer, Container } from '../../components/Containers'
+import { Container } from '../../components/Containers'
 import Controls from '../Controls'
 import { MainTitle } from '../../components/Texts'
 
@@ -22,7 +22,7 @@ const Cron: React.FC = () => {
   }, [])
 
   return (
-    <MainContainer>
+    <Container>
       <Container align="center">
         <MainTitle>Cronômetro</MainTitle>
       </Container>
@@ -31,7 +31,7 @@ const Cron: React.FC = () => {
       {loops.map((loop, idx) => (
         <DisplayLoop key={idx} time={loop} />
       ))}
-    </MainContainer>
+    </Container>
   )
 }
 

@@ -1,11 +1,13 @@
 import React, { useState, memo, useMemo, useCallback } from 'react'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import useInterval from '../../hooks/useInterval'
 import DisplayTime, { DisplayLoop } from '../../components/DisplayTime'
 import { useController } from '../../controllerContext'
 import { States, StateActions } from '../../types/state'
-import { MainContainer, Container } from '../../components/Containers'
+import { Container } from '../../components/Containers'
 import TimerForm from './TimerForm'
 import { MainTitle } from '../../components/Texts'
+import { mainColors } from '../../theme'
 
 const Timer: React.FC = () => {
   const [time, setTime] = useState(0)
@@ -18,10 +20,6 @@ const Timer: React.FC = () => {
   useInterval(
     () => {
       setTime(prevTime => {
-        // if (isReverse && prevTime - 1 === 0) {
-        //   dispatch({ type: StateActions.PAUSE })
-        //   return 0
-        // }
         if (maxTime > 0 && maxTime === prevTime + 1) {
           dispatch({ type: StateActions.PAUSE })
           return maxTime
@@ -38,11 +36,22 @@ const Timer: React.FC = () => {
   }, [])
 
   return (
-    <MainContainer>
+    <Container>
       <Container align="center">
         <MainTitle>Timer</MainTitle>
       </Container>
-      <DisplayTime time={time} />
+      <Container align="center">
+        <AnimatedCircularProgress
+          size={280}
+          width={6}
+          tintColor={mainColors.lightBLue}
+          fill={maxTime > 0 ? (time / maxTime) * 100 : 0}
+          backgroundColor={mainColors.lightGrey}
+          rotation={180}
+        >
+          {() => <DisplayTime time={time} />}
+        </AnimatedCircularProgress>
+      </Container>
       <TimerForm
         setMaxTime={setMaxTime}
         setTime={setTime}
@@ -53,7 +62,7 @@ const Timer: React.FC = () => {
       {loops.map((loop, idx) => (
         <DisplayLoop key={idx} time={loop} />
       ))}
-    </MainContainer>
+    </Container>
   )
 }
 

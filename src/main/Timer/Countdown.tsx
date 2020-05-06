@@ -3,7 +3,7 @@ import useInterval from '../../hooks/useInterval'
 import DisplayTime, { DisplayLoop } from '../../components/DisplayTime'
 import { useController } from '../../controllerContext'
 import { States, StateActions } from '../../types/state'
-import { MainContainer, Container } from '../../components/Containers'
+import { Container } from '../../components/Containers'
 import TimerForm from './TimerForm'
 import { MainTitle } from '../../components/Texts'
 
@@ -33,7 +33,7 @@ const Countdown: React.FC = () => {
   }, [])
 
   return (
-    <MainContainer>
+    <Container>
       <Container align="center">
         <MainTitle>Contagem Regressiva</MainTitle>
       </Container>
@@ -47,7 +47,7 @@ const Countdown: React.FC = () => {
       {loops.map((loop, idx) => (
         <DisplayLoop key={idx} time={loop} />
       ))}
-    </MainContainer>
+    </Container>
   )
 }
 
