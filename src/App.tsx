@@ -14,7 +14,7 @@ const App: React.FC = () => {
       <PaperProvider theme={mainTheme}>
         <NavigationContainer>
           <Drawer.Navigator
-            initialRouteName="Cron"
+            initialRouteName="Timer"
             drawerStyle={{ backgroundColor: mainColors.darkGrey }}
             drawerContentOptions={{
               activeBackgroundColor: mainColors.lightBLue,

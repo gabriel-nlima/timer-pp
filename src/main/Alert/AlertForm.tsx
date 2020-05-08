@@ -1,18 +1,18 @@
-import React, { memo, useState, useMemo } from 'react'
-import { View, Button } from 'react-native'
+import React, { memo, useState } from 'react'
+import { Button, IconButton } from 'react-native-paper'
+import { View } from 'react-native'
 import { AlertType } from './types'
 import { Input } from '../../components/Inputs'
-import { useAlertHandler } from '.'
-import { useController } from '../../controllerContext'
-import { States } from '../../types/state'
+import { Row } from '../../components/Containers'
+import { mainColors } from '../../theme'
 
-const AlertForm: React.FC = () => {
+interface Props {
+  isPlaying: boolean
+  setAlerts: React.Dispatch<React.SetStateAction<AlertType[]>>
+}
+
+const AlertForm: React.FC<Props> = ({ isPlaying, setAlerts }) => {
   const [data, setData] = useState<AlertType | undefined>({ active: false } as AlertType)
-
-  const [{ status }] = useController()
-  const { setAlerts } = useAlertHandler()
-
-  const isPlaying = useMemo(() => status === States.PLAYING, [status])
 
   const inputHandler = (value: string, key: keyof AlertType | string) => {
     setData(
@@ -33,22 +33,41 @@ const AlertForm: React.FC = () => {
 
   return (
     <View>
-      <Input
-        label="Intervalo (em segundos)"
-        keyProp="step"
-        value={data?.step}
-        keyboardType="number-pad"
-        inputHandler={inputHandler}
-        editable={!isPlaying}
-      />
-      <Input
-        label="Mensagem"
-        keyProp="msg"
-        value={data?.msg}
-        inputHandler={inputHandler}
-        editable={!isPlaying}
-      />
-      <Button onPress={handleSubmit} title="Adicionar" disabled={isPlaying} />
+      <Row justify="flex-start">
+        <Input
+          keyProp="step"
+          value={data?.step}
+          keyboardType="number-pad"
+          inputHandler={inputHandler}
+          editable={!isPlaying}
+          style={{ width: '18%', height: 50, marginBottom: 20 }}
+          mode="flat"
+        />
+        <Input
+          keyProp="msg"
+          value={data?.msg}
+          inputHandler={inputHandler}
+          editable={!isPlaying}
+          style={{ width: '62%', marginLeft: 5, marginBottom: 20, height: 50 }}
+          mode="flat"
+        />
+        <IconButton
+          icon="close"
+          color={mainColors.lightGrey}
+          size={22}
+          onPress={() => console.log('Pressed')}
+          style={{ marginBottom: 20 }}
+        />
+      </Row>
+      <Button
+        icon="plus"
+        mode="contained"
+        style={{ width: '100%' }}
+        onPress={handleSubmit}
+        disabled={isPlaying}
+      >
+        Adicionar
+      </Button>
     </View>
   )
 }

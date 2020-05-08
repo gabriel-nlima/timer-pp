@@ -6,7 +6,6 @@ import { useController } from '../../controllerContext'
 import { States, StateActions } from '../../types/state'
 import { Container } from '../../components/Containers'
 import TimerForm from './TimerForm'
-import { MainTitle } from '../../components/Texts'
 import { mainColors } from '../../theme'
 
 const Timer: React.FC = () => {
@@ -36,11 +35,8 @@ const Timer: React.FC = () => {
   }, [])
 
   return (
-    <Container>
-      <Container align="center">
-        <MainTitle>Timer</MainTitle>
-      </Container>
-      <Container align="center">
+    <Container align="center" mainContent>
+      <Container>
         <AnimatedCircularProgress
           size={280}
           width={6}

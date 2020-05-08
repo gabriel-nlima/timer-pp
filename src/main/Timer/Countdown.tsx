@@ -34,9 +34,6 @@ const Countdown: React.FC = () => {
 
   return (
     <Container>
-      <Container align="center">
-        <MainTitle>Contagem Regressiva</MainTitle>
-      </Container>
       <DisplayTime time={time} />
       <TimerForm
         setTime={setTime}

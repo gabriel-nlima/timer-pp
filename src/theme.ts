@@ -1,4 +1,4 @@
-import { DefaultTheme, Theme } from 'react-native-paper'
+import { DefaultTheme, Theme, DarkTheme } from 'react-native-paper'
 
 export const mainColors = {
   darkGrey: '#363636',
@@ -13,13 +13,13 @@ export const fontSizes = {
   text: '12px',
   subtitles: '14px',
   titles: '16px',
-  timer: '68px',
+  timer: '62px',
   listItem: '32px',
-  mainTitle: '38px',
+  mainTitle: '26px',
 }
 
 export const mainTheme: Theme = {
-  ...DefaultTheme,
+  ...DarkTheme,
   dark: true,
   colors: {
     ...DefaultTheme.colors,

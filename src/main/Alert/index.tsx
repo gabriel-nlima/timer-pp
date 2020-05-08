@@ -10,7 +10,7 @@ type AlertValue = {
   currentAlert?: AlertType
 }
 type AlertProviderProps = {
-  setAlertMsg: (msg?: string) => void
+  setAlertMsg?: (msg?: string) => void
 }
 const AlertsContext = createContext<AlertValue | undefined>(undefined)
 
@@ -34,7 +34,7 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
       alertsCpy[0].active = true
       setAlerts(alertsCpy)
       setCurrentAlert(alertsCpy[0])
-      setAlertMsg(undefined)
+      setAlertMsg && setAlertMsg(undefined)
       dispatch({ type: StateActions.PAUSE })
     }
   }, [alerts, status, setAlertMsg, dispatch])
@@ -50,8 +50,11 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
   }, [alerts])
 
   useEffect(() => {
-    !currentAlert && setCurrentAlert(alerts.find(m => m.active))
-  }, [alerts, currentAlert])
+    if (!currentAlert) {
+      setCurrentAlert(alerts.find(alert => alert.active))
+      setAlertMsg && setAlertMsg(alerts.find(alert => alert.active)?.msg)
+    }
+  }, [alerts, currentAlert, setAlertMsg])
 
   const setNextActiveAlert = useCallback(() => {
     if (currentAlert && currentAlert.active) {
@@ -64,12 +67,12 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
         if (alertIdx + 1 <= alerts.length - 1) {
           alertsCpy[alertIdx + 1].active = true
           setCurrentAlert(alertsCpy[alertIdx + 1])
-          setAlertMsg(alertsCpy[alertIdx + 1].msg)
+          setAlertMsg && setAlertMsg(alertsCpy[alertIdx + 1].msg)
         } else {
           // Chegou no final do array, ativa a primeira mensagem (com menor tempo)
           alertsCpy[0].active = true
           setCurrentAlert(alertsCpy[0])
-          setAlertMsg(alertsCpy[0].msg)
+          setAlertMsg && setAlertMsg(alertsCpy[0].msg)
         }
       }
       setAlerts(alertsCpy)

@@ -13,4 +13,10 @@ export const LoopText = styled.Text`
 export const MainTitle = styled.Text`
   font-size: ${fontSizes.mainTitle};
   color: ${mainColors.lightGrey};
+  text-align: center;
+`
+export const CurrentAlert = styled.Text`
+  font-size: ${fontSizes.listItem};
+  color: ${mainColors.white};
+  text-align: center;
 `

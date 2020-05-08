@@ -6,7 +6,7 @@ import { fontSizes, mainColors } from '../theme'
 import { TimeObj } from '../main/Timer/types'
 
 interface InputProps {
-  label: string
+  label?: string
   keyProp: string
   editable: boolean
   inputHandler: (value: any, key: string) => void
@@ -70,8 +70,6 @@ const { timerInput } = StyleSheet.create({
     height: 32,
     width: 40,
     backgroundColor: mainColors.darkGrey,
-    textAlign: 'right',
-    marginLeft: 15,
   },
 })
 

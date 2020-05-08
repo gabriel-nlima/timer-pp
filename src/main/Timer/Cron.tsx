@@ -5,7 +5,6 @@ import { useController } from '../../controllerContext'
 import { States } from '../../types/state'
 import { Container } from '../../components/Containers'
 import Controls from '../Controls'
-import { MainTitle } from '../../components/Texts'
 
 const Cron: React.FC = () => {
   const [time, setTime] = useState(0)
@@ -23,9 +22,6 @@ const Cron: React.FC = () => {
 
   return (
     <Container>
-      <Container align="center">
-        <MainTitle>Cronômetro</MainTitle>
-      </Container>
       <DisplayTime time={time} />
       <Controls onReset={resetTimer} onClickLoop={() => setLoops(prev => [time, ...prev])} />
       {loops.map((loop, idx) => (
