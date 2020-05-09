@@ -6,8 +6,8 @@ export const TimerText = styled.Text`
   color: ${mainColors.white};
 `
 export const LoopText = styled.Text`
-  font-size: ${fontSizes.listItem};
-  color: ${mainColors.white};
+  font-size: ${fontSizes.text};
+  color: ${mainColors.lightGrey};
 `
 
 export const MainTitle = styled.Text`
@@ -19,4 +19,16 @@ export const CurrentAlert = styled.Text`
   font-size: ${fontSizes.listItem};
   color: ${mainColors.white};
   text-align: center;
+  margin-bottom: 10px;
+`
+
+export const AlertHistoryItem = styled.Text`
+  color: ${mainColors.lightGrey};
+  text-align: center;
+  font-size: ${fontSizes.text};
+`
+export const Subtitle = styled.Text`
+  color: ${mainColors.lightGrey};
+  text-align: center;
+  font-size: ${fontSizes.subtitles};
 `

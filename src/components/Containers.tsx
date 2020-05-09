@@ -1,9 +1,8 @@
-import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import { mainColors } from '../theme'
 
 // Top-level container
-export const MainContainer = styled(SafeAreaView)`
+export const MainContainer = styled.View`
   padding-left: 15px;
   padding-right: 15px;
   flex: 1;
@@ -12,6 +11,8 @@ export const MainContainer = styled(SafeAreaView)`
   justify-content: center;
   align-items: center;
   background-color: ${mainColors.darkGrey};
+  width: 100%;
+  height: 100%;
 `
 
 type ContainerProps = {
@@ -23,7 +24,7 @@ export const Container = styled.View<ContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  ${({ mainContent }) => (mainContent ? `flex-grow: 1;` : '')}
+  ${({ mainContent }) => (mainContent ? `align-self: center; margin-top: auto;` : '')}
   width: 100%;
 `
 interface RowProps {
@@ -35,4 +36,37 @@ export const Row = styled.View<RowProps>`
   justify-content: ${({ justify }) => justify || 'space-between'};
   align-items: center;
   width: 100%;
+`
+export const ListsRow = styled.View<RowProps>`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`
+export const SmallList = styled.ScrollView`
+  text-align: center;
+  height: 120px;
+  min-width: 130px;
+`
+export const HeaderRow = styled.View`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  margin-top: 0;
+  position: absolute;
+`
+export const FooterRow = styled.View`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
 `

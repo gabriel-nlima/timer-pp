@@ -10,9 +10,9 @@ export const mainColors = {
 }
 
 export const fontSizes = {
-  text: '12px',
-  subtitles: '14px',
-  titles: '16px',
+  text: '18px',
+  subtitles: '22px',
+  titles: '24px',
   timer: '62px',
   listItem: '32px',
   mainTitle: '26px',

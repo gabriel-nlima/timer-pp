@@ -5,11 +5,13 @@ import { useController } from '../../controllerContext'
 import { States, StateActions } from '../../types/state'
 import { Container } from '../../components/Containers'
 import TimerForm from './TimerForm'
-import { MainTitle } from '../../components/Texts'
 
-const Countdown: React.FC = () => {
+interface Props {
+  setLoops: React.Dispatch<React.SetStateAction<number[]>>
+}
+
+const Countdown: React.FC<Props> = ({ setLoops }) => {
   const [time, setTime] = useState(0)
-  const [loops, setLoops] = useState<number[]>([])
   const [{ status }, dispatch] = useController()
 
   const isPlaying = useMemo(() => status === States.PLAYING, [status])
@@ -30,7 +32,7 @@ const Countdown: React.FC = () => {
   const resetTimer = useCallback(() => {
     setTime(0)
     setLoops([])
-  }, [])
+  }, [setLoops])
 
   return (
     <Container>
@@ -41,9 +43,6 @@ const Countdown: React.FC = () => {
         resetTimer={resetTimer}
         onClickLoop={() => setLoops(prev => [time, ...prev])}
       />
-      {loops.map((loop, idx) => (
-        <DisplayLoop key={idx} time={loop} />
-      ))}
     </Container>
   )
 }

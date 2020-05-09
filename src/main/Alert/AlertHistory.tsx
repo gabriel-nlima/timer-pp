@@ -1,9 +1,11 @@
 import React, { useState, useEffect, memo } from 'react'
-import { Text } from 'react-native'
+import { View } from 'react-native'
 import { AlertType } from './types'
 import { useAlertHandler } from '.'
 import { useController } from '../../controllerContext'
 import { States } from '../../types/state'
+import { SmallList } from '../../components/Containers'
+import { AlertHistoryItem, Subtitle } from '../../components/Texts'
 
 const AlertHandler: React.FC = () => {
   const [alertsHistory, setAlertHistory] = useState<AlertType[]>([])
@@ -30,11 +32,14 @@ const AlertHandler: React.FC = () => {
   }, [currentAlert])
 
   return (
-    <>
-      {alertsHistory.map((alert, idx) => (
-        <Text key={idx}>{alert.msg}</Text>
-      ))}
-    </>
+    <View>
+      {alertsHistory.length > 0 && <Subtitle>Histórico de alertas</Subtitle>}
+      <SmallList>
+        {alertsHistory.map((alert, idx) => (
+          <AlertHistoryItem key={idx}>{alert.msg}</AlertHistoryItem>
+        ))}
+      </SmallList>
+    </View>
   )
 }
 

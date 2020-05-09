@@ -2,18 +2,26 @@ import React, { useState, useMemo } from 'react'
 import { IconButton, FAB, Portal, Dialog, Button } from 'react-native-paper'
 import { View } from 'react-native'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
-import { ScrollView } from 'react-native-gesture-handler'
-import { MainContainer, Row, Container } from '../components/Containers'
+import { useSafeArea } from 'react-native-safe-area-context'
+import {
+  MainContainer,
+  Container,
+  SmallList,
+  HeaderRow,
+  FooterRow,
+  ListsRow,
+} from '../components/Containers'
 import Cron from './Timer/Cron'
 import Timer from './Timer/Timer'
 import Countdown from './Timer/Countdown'
 import { ControllerProvider, useController } from '../controllerContext'
-import { MainTitle, CurrentAlert } from '../components/Texts'
+import { MainTitle, CurrentAlert, Subtitle } from '../components/Texts'
 import { mainColors } from '../theme'
 import AlertProvider, { useAlertHandler } from './Alert'
 import AlertForm from './Alert/AlertForm'
 import { States } from '../types/state'
 import AlertHistory from './Alert/AlertHistory'
+import { DisplayLoop } from '../components/DisplayTime'
 
 type ScreenProps = {
   navigation: DrawerNavigationProp<{}>
@@ -25,9 +33,10 @@ interface ScreenWrapperProps extends ScreenProps {
 
 const ScreenWrapper: React.FC<ScreenWrapperProps> = React.memo(
   ({ navigation, title, children }) => {
+    const { bottom, top } = useSafeArea()
     return (
-      <MainContainer>
-        <Row>
+      <MainContainer style={{ paddingTop: top, paddingBottom: bottom }}>
+        <HeaderRow style={{ top }}>
           <IconButton
             icon="menu"
             color={mainColors.lightBLue}
@@ -36,10 +45,8 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = React.memo(
           />
           <MainTitle>{title}</MainTitle>
           <View style={{ width: 62 }} />
-        </Row>
-        <Container align="center" mainContent>
-          {children}
-        </Container>
+        </HeaderRow>
+        {children}
       </MainContainer>
     )
   },
@@ -51,16 +58,13 @@ const Alerts: React.FC = React.memo(() => {
   const { setAlerts } = useAlertHandler()
   const isPlaying = useMemo(() => status === States.PLAYING, [status])
   return (
-    <Row>
-      <View style={{ width: 55 }} />
-      <ScrollView style={{ width: 150 }}>
-        <AlertHistory />
-      </ScrollView>
+    <FooterRow>
+      <View />
       <FAB
         icon="plus"
         accessibilityLabel="Adicionar alerta"
         onPress={() => setShowDialog(true)}
-        style={{ width: 55, backgroundColor: mainColors.lightBLue, marginBottom: 40 }}
+        style={{ width: 55, backgroundColor: mainColors.lightBLue, marginBottom: 15 }}
         disabled={isPlaying}
       />
       <Portal>
@@ -80,16 +84,32 @@ const Alerts: React.FC = React.memo(() => {
           </Dialog.Actions>
         </Dialog>
       </Portal>
-    </Row>
+    </FooterRow>
   )
 })
 
 export const CronScreen: React.FC<ScreenProps> = React.memo(({ navigation }) => {
+  const [alertMsg, setAlertMsg] = useState<string | undefined>()
+  const [loops, setLoops] = useState<number[]>([])
   return (
     <ScreenWrapper title="Cronômetro" navigation={navigation}>
       <ControllerProvider>
-        <Cron />
-        <AlertProvider>
+        <CurrentAlert>{alertMsg}</CurrentAlert>
+        <Cron setLoops={setLoops} />
+        <AlertProvider setAlertMsg={setAlertMsg}>
+          <Container>
+            <ListsRow>
+              <AlertHistory />
+              <View>
+                {loops.length > 0 && <Subtitle>Voltas</Subtitle>}
+                <SmallList>
+                  {loops.map((loop, i) => (
+                    <DisplayLoop time={loop} key={i} />
+                  ))}
+                </SmallList>
+              </View>
+            </ListsRow>
+          </Container>
           <Alerts />
         </AlertProvider>
       </ControllerProvider>
@@ -99,12 +119,26 @@ export const CronScreen: React.FC<ScreenProps> = React.memo(({ navigation }) => 
 
 export const TimerScreen: React.FC<ScreenProps> = React.memo(({ navigation }) => {
   const [alertMsg, setAlertMsg] = useState<string | undefined>()
+  const [loops, setLoops] = useState<number[]>([])
   return (
     <ScreenWrapper title="Timer" navigation={navigation}>
       <ControllerProvider>
         <CurrentAlert>{alertMsg}</CurrentAlert>
-        <Timer />
+        <Timer setLoops={setLoops} />
         <AlertProvider setAlertMsg={setAlertMsg}>
+          <Container>
+            <ListsRow>
+              <AlertHistory />
+              <View>
+                {loops.length > 0 && <Subtitle>Voltas</Subtitle>}
+                <SmallList>
+                  {loops.map((loop, i) => (
+                    <DisplayLoop time={loop} key={i} />
+                  ))}
+                </SmallList>
+              </View>
+            </ListsRow>
+          </Container>
           <Alerts />
         </AlertProvider>
       </ControllerProvider>
@@ -113,11 +147,27 @@ export const TimerScreen: React.FC<ScreenProps> = React.memo(({ navigation }) =>
 })
 
 export const CountdownScreen: React.FC<ScreenProps> = React.memo(({ navigation }) => {
+  const [alertMsg, setAlertMsg] = useState<string | undefined>()
+  const [loops, setLoops] = useState<number[]>([])
   return (
     <ScreenWrapper title="Contagem Regressiva" navigation={navigation}>
       <ControllerProvider>
-        <Countdown />
-        <AlertProvider>
+        <CurrentAlert>{alertMsg}</CurrentAlert>
+        <Countdown setLoops={setLoops} />
+        <AlertProvider setAlertMsg={setAlertMsg}>
+          <Container>
+            <ListsRow>
+              <AlertHistory />
+              <View>
+                {loops.length > 0 && <Subtitle>Voltas</Subtitle>}
+                <SmallList>
+                  {loops.map((loop, i) => (
+                    <DisplayLoop time={loop} key={i} />
+                  ))}
+                </SmallList>
+              </View>
+            </ListsRow>
+          </Container>
           <Alerts />
         </AlertProvider>
       </ControllerProvider>
