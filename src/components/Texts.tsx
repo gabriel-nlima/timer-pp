@@ -14,16 +14,21 @@ export const MainTitle = styled.Text`
   font-size: ${fontSizes.mainTitle};
   color: ${mainColors.lightGrey};
   text-align: center;
+  width: 130px;
 `
 export const CurrentAlert = styled.Text`
   font-size: ${fontSizes.listItem};
+  font-weight: 700;
   color: ${mainColors.white};
   text-align: center;
   margin-bottom: 10px;
 `
 
-export const AlertHistoryItem = styled.Text`
-  color: ${mainColors.lightGrey};
+interface HistoryProps {
+  color?: string
+}
+export const AlertHistoryItem = styled.Text<HistoryProps>`
+  color: ${({ color }) => color || mainColors.lightGrey};
   text-align: center;
   font-size: ${fontSizes.text};
 `

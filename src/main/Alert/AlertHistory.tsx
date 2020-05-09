@@ -6,6 +6,7 @@ import { useController } from '../../controllerContext'
 import { States } from '../../types/state'
 import { SmallList } from '../../components/Containers'
 import { AlertHistoryItem, Subtitle } from '../../components/Texts'
+import { mainColors } from '../../theme'
 
 const AlertHandler: React.FC = () => {
   const [alertsHistory, setAlertHistory] = useState<AlertType[]>([])
@@ -36,7 +37,9 @@ const AlertHandler: React.FC = () => {
       {alertsHistory.length > 0 && <Subtitle>Histórico de alertas</Subtitle>}
       <SmallList>
         {alertsHistory.map((alert, idx) => (
-          <AlertHistoryItem key={idx}>{alert.msg}</AlertHistoryItem>
+          <AlertHistoryItem key={idx} color={idx === 0 ? mainColors.lightBLue : undefined}>
+            {alert.msg}
+          </AlertHistoryItem>
         ))}
       </SmallList>
     </View>

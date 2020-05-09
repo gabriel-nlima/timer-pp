@@ -1,6 +1,6 @@
 import React, { useState, memo, useMemo, useCallback } from 'react'
 import useInterval from '../../hooks/useInterval'
-import DisplayTime, { DisplayLoop } from '../../components/DisplayTime'
+import DisplayTime from '../../components/DisplayTime'
 import { useController } from '../../controllerContext'
 import { States, StateActions } from '../../types/state'
 import { Container } from '../../components/Containers'

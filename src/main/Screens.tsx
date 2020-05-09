@@ -55,7 +55,7 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = React.memo(
 const Alerts: React.FC = React.memo(() => {
   const [showDialog, setShowDialog] = useState(false)
   const [{ status }] = useController()
-  const { setAlerts } = useAlertHandler()
+  const { setAlerts, alerts } = useAlertHandler()
   const isPlaying = useMemo(() => status === States.PLAYING, [status])
   return (
     <FooterRow>
@@ -75,7 +75,7 @@ const Alerts: React.FC = React.memo(() => {
         >
           <Dialog.Title>Adicionar alertas</Dialog.Title>
           <Dialog.Content>
-            <AlertForm setAlerts={setAlerts} isPlaying={isPlaying} />
+            <AlertForm setAlerts={setAlerts} alerts={alerts} isPlaying={isPlaying} />
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setShowDialog(false)} labelStyle={{ fontSize: 18 }}>
