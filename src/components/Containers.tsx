@@ -50,7 +50,6 @@ export const ListsRow = styled.View<RowProps>`
   width: 100%;
 `
 export const SmallList = styled.ScrollView`
-  text-align: center;
   height: 120px;
   min-width: 130px;
 `
