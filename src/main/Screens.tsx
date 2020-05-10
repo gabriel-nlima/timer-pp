@@ -15,7 +15,7 @@ import Cron from './Timer/Cron'
 import Timer from './Timer/Timer'
 import Countdown from './Timer/Countdown'
 import { ControllerProvider, useController } from '../controllerContext'
-import { MainTitle, CurrentAlert, Subtitle } from '../components/Texts'
+import { MainTitle, CurrentAlert, Subtitle, HintText, HighlightText } from '../components/Texts'
 import { mainColors } from '../theme'
 import AlertProvider, { useAlertHandler } from './Alert'
 import AlertForm from './Alert/AlertForm'
@@ -75,6 +75,14 @@ const Alerts: React.FC = React.memo(() => {
         >
           <Dialog.Title>Adicionar alertas</Dialog.Title>
           <Dialog.Content>
+            <HintText>
+              Adicione quantos quiser, de acordo com a{' '}
+              <HighlightText>ordem em que devem ser executados (de cima para baixo).</HighlightText>
+            </HintText>
+            <HintText>
+              Adicione o intervalo, em <HighlightText>segundos</HighlightText>, e a mensagem do
+              alerta.
+            </HintText>
             <AlertForm setAlerts={setAlerts} alerts={alerts} isPlaying={isPlaying} />
           </Dialog.Content>
           <Dialog.Actions>

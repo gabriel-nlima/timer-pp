@@ -23,7 +23,6 @@ export const CurrentAlert = styled.Text`
   text-align: center;
   margin-bottom: 10px;
 `
-
 interface HistoryProps {
   color?: string
 }
@@ -36,4 +35,15 @@ export const Subtitle = styled.Text`
   color: ${mainColors.lightGrey};
   text-align: center;
   font-size: ${fontSizes.subtitles};
+`
+export const HintText = styled.Text`
+  color: ${mainColors.lightGrey};
+  font-size: ${fontSizes.smallText};
+  text-align: justify;
+  margin-bottom: 5px;
+`
+export const HighlightText = styled.Text`
+  color: ${mainColors.lightBLue};
+  font-size: ${fontSizes.smallText};
+  font-weight: 700;
 `

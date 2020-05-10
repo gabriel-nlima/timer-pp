@@ -12,6 +12,7 @@ interface Props {
   setTime: React.Dispatch<React.SetStateAction<number>>
   resetTimer: () => void
   onClickLoop: () => void
+  onPlayInReverse?: (seconds: number) => void
   setMaxTime?: React.Dispatch<React.SetStateAction<number>>
 }
 const TimerForm: React.FC<Props> = ({
@@ -19,6 +20,7 @@ const TimerForm: React.FC<Props> = ({
   setTime,
   setMaxTime,
   resetTimer,
+  onPlayInReverse,
   ...controlProps
 }) => {
   const [selectedTime, setSelectedTime] = useState<TimeObj>({
@@ -40,9 +42,9 @@ const TimerForm: React.FC<Props> = ({
     if (hasATimeSelected) {
       const { hours, minutes, seconds } = selectedTime
       const totalInSeconds = Number(hours) * 60 * 60 + Number(minutes) * 60 + Number(seconds)
-      isReverse ? setTime(totalInSeconds) : setMaxTime && setMaxTime(totalInSeconds)
+      isReverse ? onPlayInReverse!(totalInSeconds) : setMaxTime!(totalInSeconds)
     }
-  }, [hasATimeSelected, selectedTime, setMaxTime, setTime, isReverse])
+  }, [hasATimeSelected, selectedTime, setMaxTime, onPlayInReverse, isReverse])
 
   // TODO Play/Reset limpa os inputs?
   const inputHandler = (value: string, key: string) => {

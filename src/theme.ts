@@ -10,6 +10,7 @@ export const mainColors = {
 }
 
 export const fontSizes = {
+  smallText: '14px',
   text: '18px',
   subtitles: '22px',
   titles: '24px',

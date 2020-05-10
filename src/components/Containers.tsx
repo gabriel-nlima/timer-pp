@@ -27,6 +27,11 @@ export const Container = styled.View<ContainerProps>`
   ${({ mainContent }) => (mainContent ? `align-self: center; margin-top: auto;` : '')}
   width: 100%;
 `
+export const ScrollContainer = styled.ScrollView<ContainerProps>`
+  display: flex;
+  width: 100%;
+  margin-bottom: 5px;
+`
 interface RowProps {
   justify?: 'flex-start' | 'center' | 'space-between' | 'flex-end'
 }
