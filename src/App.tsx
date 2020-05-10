@@ -48,7 +48,7 @@ export default App
 /**
  * ### Estrutura e componentes
  * ControlerContext:
- * Um React Context com reducer para manipular os estados do timer (Playing, paused, reset (zerado), e stoped)
+ * Um React Context com reducer para manipular os estados do timer (Playing, paused, reset (zerado), e STOPPED)
  * No top-level do app para q todos os componentes saibam o estado da aplicação
  *
  * Controlers:

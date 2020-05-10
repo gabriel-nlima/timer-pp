@@ -30,7 +30,7 @@ const TimerForm: React.FC<Props> = ({
   })
 
   const [{ status }] = useController()
-  const isPlaying = useMemo(() => status === States.PLAYING, [status])
+  const isStarted = useMemo(() => status === States.STARTED, [status])
 
   const hasATimeSelected = useMemo(
     () =>
@@ -149,15 +149,15 @@ const TimerForm: React.FC<Props> = ({
 
   return (
     <Container align="center">
-      {!isPlaying && (
-        <InputTime inputHandler={inputHandler} selectedTime={selectedTime} isPlaying={isPlaying} />
+      {!isStarted && (
+        <InputTime inputHandler={inputHandler} selectedTime={selectedTime} isStarted={isStarted} />
       )}
       <Controls
         onPlay={onPlay}
         onReset={resetTimer}
-        {...controlProps}
         setTime={!isReverse ? setTime : undefined}
         btnDisabled={!hasATimeSelected}
+        {...controlProps}
       />
     </Container>
   )

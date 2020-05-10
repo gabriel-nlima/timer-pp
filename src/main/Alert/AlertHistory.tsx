@@ -15,7 +15,7 @@ const AlertHandler: React.FC = () => {
   const [{ status }] = useController()
 
   useEffect(() => {
-    if (status === States.RESETED) {
+    if (status === States.STOPPED) {
       setAlertHistory([])
     }
   }, [status])
@@ -23,7 +23,7 @@ const AlertHandler: React.FC = () => {
   useEffect(() => {
     // Adiciona o alerta atual no histórico
     !!currentAlert &&
-      status === States.PLAYING &&
+      status === States.STARTED &&
       setAlertHistory(prevAlerts => [
         {
           ...currentAlert,

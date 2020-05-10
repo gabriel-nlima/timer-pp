@@ -21,48 +21,48 @@ const Controls: React.FC<Props> = ({
   setTime,
   btnDisabled,
 }) => {
-  const [isStarted, setIsStarted] = useState<number | undefined>()
+  const [toStartIn, setToStartIn] = useState<number | undefined>()
   const [{ status }, dispatch] = useController()
 
-  const isPlaying = useMemo(() => status === States.PLAYING, [status])
+  const isStarted = useMemo(() => status === States.STARTED, [status])
 
   // Espera 3 segundos antes de iniciar
   useInterval(
     () => {
-      setIsStarted(prev => (prev && prev >= 1 ? prev - 1 : 0))
-      if (isStarted === 1) {
-        dispatch({ type: StateActions.PLAY })
+      setToStartIn(prev => (prev && prev >= 1 ? prev - 1 : 0))
+      if (toStartIn === 1) {
+        dispatch({ type: StateActions.START })
       }
     },
-    isStarted ? 1000 : undefined,
+    toStartIn ? 1000 : undefined,
   )
 
   useEffect(() => {
-    if (isStarted === 0 && isPlaying) {
-      setIsStarted(undefined)
+    if (toStartIn === 0 && status === States.STOPPED) {
+      setToStartIn(undefined)
       setTime && setTime(0)
     }
-  }, [isStarted, isPlaying, setTime])
+  }, [toStartIn, isStarted, setTime, status])
 
-  const onPressPlay = useCallback(() => {
-    if (isStarted === undefined) {
+  const onPressStart = useCallback(() => {
+    if (toStartIn === undefined) {
       onPlay && onPlay()
-      setIsStarted(3)
+      setToStartIn(3)
     } else {
-      dispatch({ type: StateActions.PLAY })
+      dispatch({ type: StateActions.START })
     }
-  }, [onPlay, isStarted, dispatch])
+  }, [onPlay, toStartIn, dispatch])
 
   const onPressPause = useCallback(() => {
     onPause && onPause()
     dispatch({ type: StateActions.PAUSE })
-    setIsStarted(0)
+    setToStartIn(0)
   }, [dispatch, onPause])
 
   const onPressReset = useCallback(() => {
     onReset && onReset()
     dispatch({ type: StateActions.RESET })
-    setIsStarted(undefined)
+    setToStartIn(undefined)
   }, [dispatch, onReset])
 
   return (
@@ -71,15 +71,15 @@ const Controls: React.FC<Props> = ({
         Zerar
       </CustomButton>
       <PlayPauseBtn
-        onPress={() => (isPlaying ? onPressPause() : onPressPlay())}
+        onPress={() => (isStarted ? onPressPause() : onPressStart())}
+        toStartIn={toStartIn}
         isStarted={isStarted}
-        isPlaying={isPlaying}
         disabled={btnDisabled}
       >
-        {isStarted ? `${isStarted}` : undefined}
+        {toStartIn ? `${toStartIn}` : undefined}
       </PlayPauseBtn>
       {!!onClickLoop && (
-        <CustomButton compact onPress={onClickLoop} disabled={!isPlaying}>
+        <CustomButton compact onPress={onClickLoop} disabled={!isStarted}>
           Volta
         </CustomButton>
       )}

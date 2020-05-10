@@ -7,7 +7,7 @@ import { Row, ScrollContainer } from '../../components/Containers'
 import { mainColors } from '../../theme'
 
 interface Props {
-  isPlaying: boolean
+  isStarted: boolean
   setAlerts: React.Dispatch<React.SetStateAction<AlertType[]>>
   alerts: AlertType[]
 }
@@ -17,7 +17,7 @@ const emptyAlert: AlertType = {
   msg: '',
   active: false,
 }
-const AlertForm: React.FC<Props> = ({ isPlaying, setAlerts, alerts }) => {
+const AlertForm: React.FC<Props> = ({ isStarted, setAlerts, alerts }) => {
   useEffect(() => {
     if (alerts.length === 0) {
       setAlerts([{ ...emptyAlert }])
@@ -55,7 +55,7 @@ const AlertForm: React.FC<Props> = ({ isPlaying, setAlerts, alerts }) => {
               value={alert.step}
               keyboardType="number-pad"
               inputHandler={(text, key) => inputHandler(text, key, index)}
-              editable={!isPlaying}
+              editable={!isStarted}
               style={{ width: '18%', height: 50, marginBottom: 20 }}
               mode="flat"
             />
@@ -63,7 +63,7 @@ const AlertForm: React.FC<Props> = ({ isPlaying, setAlerts, alerts }) => {
               keyProp="msg"
               value={alert.msg}
               inputHandler={(text, key) => inputHandler(text, key, index)}
-              editable={!isPlaying}
+              editable={!isStarted}
               style={{ width: '62%', marginLeft: 5, marginBottom: 20, height: 50 }}
               mode="flat"
             />
@@ -84,7 +84,7 @@ const AlertForm: React.FC<Props> = ({ isPlaying, setAlerts, alerts }) => {
         mode="contained"
         style={{ width: '100%' }}
         onPress={addEmptyAlert}
-        disabled={isPlaying}
+        disabled={isStarted}
       >
         Adicionar
       </Button>

@@ -1,4 +1,4 @@
-import React, { useState, memo, useMemo, useCallback } from 'react'
+import React, { useState, memo, useCallback } from 'react'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import useInterval from '../../hooks/useInterval'
 import DisplayTime from '../../components/DisplayTime'
@@ -16,20 +16,19 @@ const Timer: React.FC<Props> = ({ setLoops }) => {
   const [maxTime, setMaxTime] = useState(0)
   const [{ status }, dispatch] = useController()
 
-  const isPlaying = useMemo(() => status === States.PLAYING, [status])
-
   useInterval(
     () => {
       setTime(prevTime => {
         if (maxTime > 0 && maxTime === prevTime + 1) {
-          dispatch({ type: StateActions.PAUSE })
+          dispatch({ type: StateActions.STOP })
           return maxTime
         }
         return prevTime + 1
       })
     },
-    isPlaying ? 1000 : undefined,
+    status === States.STARTED ? 1000 : undefined,
   )
+  console.log(time)
 
   const resetTimer = useCallback(() => {
     setTime(0)

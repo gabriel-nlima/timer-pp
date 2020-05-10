@@ -1,13 +1,13 @@
 export enum States {
-  PAUSED = 'PAUSED', // initial
-  PLAYING = 'PLAYING',
+  PAUSED = 'PAUSED',
+  STARTED = 'STARTED',
   RESETED = 'RESETED',
-  STOPED = 'STOPED',
+  STOPPED = 'STOPPED', // initial
 }
 
 export enum StateActions {
   PAUSE = 'PAUSE',
-  PLAY = 'PLAY',
+  START = 'START',
   RESET = 'RESET',
   STOP = 'STOP',
 }

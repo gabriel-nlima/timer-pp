@@ -6,5 +6,6 @@ export type ControlState = {
 
 export type ControlActions =
   | { type: StateActions.PAUSE }
-  | { type: StateActions.PLAY }
+  | { type: StateActions.START }
   | { type: StateActions.RESET }
+  | { type: StateActions.STOP }

@@ -56,7 +56,7 @@ const Alerts: React.FC = React.memo(() => {
   const [showDialog, setShowDialog] = useState(false)
   const [{ status }] = useController()
   const { setAlerts, alerts } = useAlertHandler()
-  const isPlaying = useMemo(() => status === States.PLAYING, [status])
+  const isStarted = useMemo(() => status === States.STARTED, [status])
   return (
     <FooterRow>
       <View />
@@ -65,7 +65,7 @@ const Alerts: React.FC = React.memo(() => {
         accessibilityLabel="Adicionar alerta"
         onPress={() => setShowDialog(true)}
         style={{ width: 55, backgroundColor: mainColors.lightBLue, marginBottom: 15 }}
-        disabled={isPlaying}
+        disabled={isStarted}
       />
       <Portal>
         <Dialog
@@ -83,7 +83,7 @@ const Alerts: React.FC = React.memo(() => {
               Adicione o intervalo, em <HighlightText>segundos</HighlightText>, e a mensagem do
               alerta.
             </HintText>
-            <AlertForm setAlerts={setAlerts} alerts={alerts} isPlaying={isPlaying} />
+            <AlertForm setAlerts={setAlerts} alerts={alerts} isStarted={isStarted} />
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setShowDialog(false)} labelStyle={{ fontSize: 18 }}>

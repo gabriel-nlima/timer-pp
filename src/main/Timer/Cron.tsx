@@ -1,4 +1,4 @@
-import React, { useState, memo, useMemo, useCallback } from 'react'
+import React, { useState, memo, useCallback } from 'react'
 import useInterval from '../../hooks/useInterval'
 import DisplayTime from '../../components/DisplayTime'
 import { useController } from '../../controllerContext'
@@ -13,9 +13,7 @@ const Cron: React.FC<Props> = ({ setLoops }) => {
   const [time, setTime] = useState(0)
   const [{ status }] = useController()
 
-  const isPlaying = useMemo(() => status === States.PLAYING, [status])
-
-  useInterval(() => setTime(prevTime => prevTime + 1), isPlaying ? 1000 : undefined)
+  useInterval(() => setTime(prevTime => prevTime + 1), status === States.STARTED ? 1000 : undefined)
 
   const resetTimer = useCallback(() => {
     setTime(0)

@@ -82,13 +82,13 @@ export const InputTimeGroup = styled.View`
 
 interface InputTimeProps {
   selectedTime: TimeObj
-  isPlaying: boolean
+  isStarted: boolean
   inputHandler: (value: any, key: string) => void
   onKeyPress?: (e: any, key: string) => void
 }
 export const InputTime: React.FC<InputTimeProps> = ({
   selectedTime,
-  isPlaying,
+  isStarted,
   inputHandler,
   onKeyPress,
 }) => {
@@ -123,7 +123,7 @@ export const InputTime: React.FC<InputTimeProps> = ({
         value={selectedTime.seconds}
         keyboardType="number-pad"
         inputHandler={inputHandler}
-        editable={!isPlaying}
+        editable={!isStarted}
         onKeyPress={onKeyPress}
         style={timerInput}
       />

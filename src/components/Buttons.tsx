@@ -13,15 +13,15 @@ export const ButtonGroup = styled.View`
 export const CustomButton = styled(Button)``
 
 type PlayPauseBtnProps = {
-  isPlaying: boolean
+  isStarted: boolean
   onPress?: () => void
-  isStarted?: number
+  toStartIn?: number
   disabled?: boolean
 }
 export const PlayPauseBtn: React.FC<PlayPauseBtnProps> = ({
   children,
+  toStartIn,
   isStarted,
-  isPlaying,
   disabled,
   ...props
 }) => {
@@ -30,11 +30,11 @@ export const PlayPauseBtn: React.FC<PlayPauseBtnProps> = ({
       {...props}
       compact
       mode="contained"
-      icon={isStarted ? undefined : isPlaying ? 'pause' : 'play'}
+      icon={toStartIn ? undefined : isStarted ? 'pause' : 'play'}
       contentStyle={{ height: 60, width: 60 }}
       style={{ borderRadius: 70 }}
       labelStyle={{ fontSize: 20 }}
-      disabled={!!isStarted || disabled}
+      disabled={!!toStartIn || disabled}
     >
       {children}
     </CustomButton>

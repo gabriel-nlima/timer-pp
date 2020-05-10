@@ -21,7 +21,7 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
   )
   const [{ status }, dispatch] = useController()
 
-  const isPlaying = useMemo(() => status === States.PLAYING, [status])
+  const isStarted = useMemo(() => status === States.STARTED, [status])
 
   useEffect(() => {
     if (status === States.RESETED && alerts.length) {
@@ -35,7 +35,7 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
       setAlerts(alertsCpy)
       setCurrentAlert(alertsCpy[0])
       setAlertMsg && setAlertMsg(undefined)
-      dispatch({ type: StateActions.PAUSE })
+      dispatch({ type: StateActions.STOP })
     }
   }, [alerts, status, setAlertMsg, dispatch])
 
@@ -51,8 +51,8 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
 
   useEffect(() => {
     setCurrentAlert(alerts.find(alert => alert.active))
-    setAlertMsg && setAlertMsg(alerts.find(alert => alert.active)?.msg)
-  }, [alerts, setAlertMsg])
+    isStarted && setAlertMsg!(alerts.find(alert => alert.active)?.msg)
+  }, [alerts, setAlertMsg, isStarted])
 
   const setNextActiveAlert = useCallback(() => {
     if (currentAlert && currentAlert.active) {
@@ -78,7 +78,7 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
     () => {
       setNextActiveAlert()
     },
-    isPlaying && currentAlert ? currentAlert.step * 1000 : undefined,
+    isStarted && currentAlert ? currentAlert.step * 1000 : undefined,
   )
 
   return (
