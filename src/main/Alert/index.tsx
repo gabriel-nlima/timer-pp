@@ -50,11 +50,9 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
   }, [alerts])
 
   useEffect(() => {
-    if (!currentAlert) {
-      setCurrentAlert(alerts.find(alert => alert.active))
-      setAlertMsg && setAlertMsg(alerts.find(alert => alert.active)?.msg)
-    }
-  }, [alerts, currentAlert, setAlertMsg])
+    setCurrentAlert(alerts.find(alert => alert.active))
+    setAlertMsg && setAlertMsg(alerts.find(alert => alert.active)?.msg)
+  }, [alerts, setAlertMsg])
 
   const setNextActiveAlert = useCallback(() => {
     if (currentAlert && currentAlert.active) {
@@ -66,18 +64,14 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
 
         if (alertIdx + 1 <= alerts.length - 1) {
           alertsCpy[alertIdx + 1].active = true
-          setCurrentAlert(alertsCpy[alertIdx + 1])
-          setAlertMsg && setAlertMsg(alertsCpy[alertIdx + 1].msg)
         } else {
           // Chegou no final do array, ativa a primeira mensagem (com menor tempo)
           alertsCpy[0].active = true
-          setCurrentAlert(alertsCpy[0])
-          setAlertMsg && setAlertMsg(alertsCpy[0].msg)
         }
       }
       setAlerts(alertsCpy)
     }
-  }, [alerts, currentAlert, setAlertMsg])
+  }, [alerts, currentAlert])
 
   // Intervalo da mensagem atual
   useInterval(

@@ -23,6 +23,7 @@ const AlertHandler: React.FC = () => {
   useEffect(() => {
     // Adiciona o alerta atual no histórico
     !!currentAlert &&
+      status === States.PLAYING &&
       setAlertHistory(prevAlerts => [
         {
           ...currentAlert,
@@ -30,7 +31,7 @@ const AlertHandler: React.FC = () => {
         },
         ...prevAlerts,
       ])
-  }, [currentAlert])
+  }, [currentAlert, status])
 
   return (
     <View>

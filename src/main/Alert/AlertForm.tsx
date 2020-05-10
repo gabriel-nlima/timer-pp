@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useEffect } from 'react'
+import React, { memo, useCallback, useEffect } from 'react'
 import { Button, IconButton } from 'react-native-paper'
 import { View } from 'react-native'
 import { AlertType } from './types'
@@ -29,13 +29,6 @@ const AlertForm: React.FC<Props> = ({ isPlaying, setAlerts, alerts }) => {
     alertsCpy[index][key] = key === 'step' ? Number(value) : value
     setAlerts(alertsCpy)
   }
-
-  // const handleSubmit = () => {
-  //   if (!isPlaying && data && data.step && data.msg) {
-  //     setAlerts(prevAlerts => [...prevAlerts, data])
-  //     setData({ active: false } as AlertType)
-  //   }
-  // }
 
   const addEmptyAlert = useCallback(() => {
     setAlerts(prevAlerts => [...prevAlerts, { ...emptyAlert }])
