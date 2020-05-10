@@ -1,17 +1,4 @@
 {
   "name": "timerpp",
-  "displayName": "Timer++",
-  "expo": {
-    "name": "Timer++",
-    "slug": "timerpp",
-    "version": "1.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "assetBundlePatterns": [
-      "**/*"
-    ]
-  }
+  "displayName": "Timer++"
 }
