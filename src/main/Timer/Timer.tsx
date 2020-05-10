@@ -1,4 +1,4 @@
-import React, { useState, memo, useCallback } from 'react'
+import React, { useState, memo, useCallback, useEffect } from 'react'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import useInterval from '../../hooks/useInterval'
 import DisplayTime from '../../components/DisplayTime'
@@ -28,7 +28,11 @@ const Timer: React.FC<Props> = ({ setLoops }) => {
     },
     status === States.STARTED ? 1000 : undefined,
   )
-  console.log(time)
+  useEffect(() => {
+    if (status === States.RESETED) {
+      dispatch({ type: StateActions.STOP })
+    }
+  }, [status, dispatch])
 
   const resetTimer = useCallback(() => {
     setTime(0)

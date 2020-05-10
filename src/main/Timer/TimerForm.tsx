@@ -149,7 +149,7 @@ const TimerForm: React.FC<Props> = ({
 
   return (
     <Container align="center">
-      {!isStarted && (
+      {status === States.STOPPED && (
         <InputTime inputHandler={inputHandler} selectedTime={selectedTime} isStarted={isStarted} />
       )}
       <Controls
