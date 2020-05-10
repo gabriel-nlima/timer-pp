@@ -49,7 +49,7 @@ const Countdown: React.FC<Props> = ({ setLoops }) => {
   return (
     <Container>
       <AnimatedCircularProgress
-        size={250}
+        size={280}
         width={6}
         tintColor={mainColors.lightBLue}
         fill={maxTime > 0 ? (time / maxTime) * 100 : 0}

@@ -11,12 +11,12 @@ export const mainColors = {
 
 export const fontSizes = {
   smallText: '14px',
-  text: '18px',
-  subtitles: '22px',
-  titles: '24px',
-  timer: '62px',
-  listItem: '32px',
-  mainTitle: '26px',
+  text: '16px',
+  subtitles: '18px',
+  titles: '20px',
+  timer: '56px',
+  listItem: '28px',
+  mainTitle: '24px',
 }
 
 export const mainTheme: Theme = {

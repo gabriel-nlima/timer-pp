@@ -14,7 +14,8 @@ export const MainTitle = styled.Text`
   font-size: ${fontSizes.mainTitle};
   color: ${mainColors.lightGrey};
   text-align: center;
-  width: 130px;
+  font-weight: bold;
+  min-width: 115px;
 `
 export const CurrentAlert = styled.Text`
   font-size: ${fontSizes.listItem};

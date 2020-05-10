@@ -43,7 +43,7 @@ const Timer: React.FC<Props> = ({ setLoops }) => {
     <Container align="center">
       <Container>
         <AnimatedCircularProgress
-          size={250}
+          size={280}
           width={6}
           tintColor={mainColors.lightBLue}
           fill={maxTime > 0 ? (time / maxTime) * 100 : 0}
