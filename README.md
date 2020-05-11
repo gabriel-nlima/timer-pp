@@ -1,6 +1,6 @@
 # Timer++
 
-Timer com funcionalidades extras feito com [React Native](https://reactnative.dev/) e [Expo](https://expo.io/).
+Timer com funcionalidades extras feito com [React Native](https://reactnative.dev/).
 
 ## Features
 
@@ -44,4 +44,4 @@ Criando uma rotina para fazer um exercício por 20 segundos e depois descansar p
 
 - Clone o repositório
 - Abra o terminal dentro da pasta do repo e rode `yarn` para instalar as depêndencias
-- Rode `yarn web` para iniciar o expo e o app no navegador, use o QR CODE para ver o app em seu celular. Também pode rodar `yarn android` para iniciar o app em um emulador ou dispositivo android, se tiver. E `yarn ios` para iniciar em um dispositivo iOS.
+- Rode `yarn android` para iniciar o app em um emulador ou dispositivo android, se tiver. E `yarn ios` para iniciar em um dispositivo iOS.
