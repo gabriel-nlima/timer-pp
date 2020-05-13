@@ -1,8 +1,12 @@
 import React, { useState, useCallback, useEffect, createContext, useMemo } from 'react'
+import { Vibration } from 'react-native'
 import useInterval from '../../hooks/useInterval'
 import { AlertType } from './types'
 import { useController } from '../../controllerContext'
 import { States, StateActions } from '../../types/state'
+
+// espera 0.2 segundo, vibra por meio segundo, espera 0.2 segundo e vibra por meio segundo
+const PATTERN = [200, 500, 200, 500]
 
 type AlertValue = {
   alerts: AlertType[]
@@ -77,6 +81,7 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
   useInterval(
     () => {
       setNextActiveAlert()
+      Vibration.vibrate(PATTERN)
     },
     isStarted && currentAlert ? currentAlert.step * 1000 : undefined,
   )

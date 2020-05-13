@@ -14,7 +14,7 @@ Timer com funcionalidades extras feito com [React Native](https://reactnative.de
 
 Defina alertas ou lembretes com intervalo (em segundos) para marcar suas atividades.
 
-Crie sequências e rotinas em poucos passos. Ideal para marcar treinos com exercícios intervalados (por exemplo: HIIT), controle de tempo em refeições e tarefas repetitivas. O smartphone vibra quando um alerta é ativado [TODO]
+Crie sequências e rotinas em poucos passos. Ideal para marcar treinos com exercícios intervalados (por exemplo: HIIT), controle de tempo em refeições e tarefas repetitivas. O smartphone vibra quando um alerta é ativado. Opcionalmente, pode-se gravar um audio para tocar quando o respectivo alerta é ativado [TODO].
 
 Também inclui:
 
@@ -44,4 +44,9 @@ Criando uma rotina para fazer um exercício por 20 segundos e depois descansar p
 
 - Clone o repositório
 - Abra o terminal dentro da pasta do repo e rode `yarn` para instalar as depêndencias
-- Rode `yarn android` para iniciar o app em um emulador ou dispositivo android, se tiver. E `yarn ios` para iniciar em um dispositivo iOS.
+- Rode `yarn android` para iniciar o Timer++ em um emulador ou dispositivo android, se tiver. E `yarn ios` para iniciar em um dispositivo iOS.
+
+## Limitações
+
+- Por enquanto o Timer++ não roda em background, isto é, o contador pausa quando o app é minimizado.
+- O intervalo do alerta é em segundos, em breve será possivel escolher o intervalo em qualquer medida.
