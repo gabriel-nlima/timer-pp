@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from 'react'
+import React, { memo, useCallback, useEffect, useRef } from 'react'
 import { Button, IconButton } from 'react-native-paper'
 import { View } from 'react-native'
 import { AlertType } from './types'
@@ -18,9 +18,14 @@ const emptyAlert: AlertType = {
   active: false,
 }
 const AlertForm: React.FC<Props> = ({ isStarted, setAlerts, alerts }) => {
+  const inputsRef = useRef<any[]>([])
   useEffect(() => {
     if (alerts.length === 0) {
       setAlerts([{ ...emptyAlert }])
+    }
+    // Foca o primeiro input de intervalo
+    if (alerts.length === 1 && inputsRef.current[0] !== undefined) {
+      inputsRef.current[0].focus()
     }
   }, [alerts.length, setAlerts])
 
@@ -58,6 +63,8 @@ const AlertForm: React.FC<Props> = ({ isStarted, setAlerts, alerts }) => {
               editable={!isStarted}
               style={{ width: '18%', height: 50, marginBottom: 20 }}
               mode="flat"
+              inputRef={inputsRef}
+              indexRef={index}
             />
             <Input
               keyProp="msg"

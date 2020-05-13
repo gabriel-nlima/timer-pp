@@ -32,6 +32,8 @@ interface InputProps {
     | 'web-search'
   onKeyPress?: (e: any, key: string) => void
   onSubmitEditing?: (e: any, key: string) => void
+  inputRef?: any
+  indexRef?: number
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -43,6 +45,8 @@ export const Input: React.FC<InputProps> = ({
   onKeyPress,
   onSubmitEditing,
   editable,
+  inputRef,
+  indexRef,
   ...props
 }) => (
   <TextInput
@@ -56,6 +60,15 @@ export const Input: React.FC<InputProps> = ({
     disabled={!editable}
     editable={editable}
     underlineColor={mainColors.lightGrey}
+    ref={input => {
+      if (inputRef) {
+        if (indexRef !== undefined) {
+          inputRef.current[indexRef] = input
+        } else {
+          inputRef.current = input
+        }
+      }
+    }}
     {...props}
   />
 )
