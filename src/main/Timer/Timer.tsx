@@ -1,6 +1,7 @@
 import React, { useState, memo, useCallback, useEffect, useRef, useMemo } from 'react'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import { Vibration } from 'react-native'
+import BackgroundTimer from 'react-native-background-timer'
 import useInterval from '../../hooks/useInterval'
 import DisplayTime from '../../components/DisplayTime'
 import { useController } from '../../controllerContext'
@@ -53,6 +54,7 @@ const Timer: React.FC<Props> = ({ setLoops, setDone, alert }) => {
       if (maxTime > 0 && maxTime === time + 1) {
         dispatch({ type: StateActions.STOP })
         setTime(maxTime)
+        BackgroundTimer.stopBackgroundTimer()
       } else {
         setTime(time + 1)
       }
