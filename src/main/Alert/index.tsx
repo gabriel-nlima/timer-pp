@@ -1,12 +1,7 @@
 import React, { useState, useCallback, useEffect, createContext, useMemo } from 'react'
-import { Vibration } from 'react-native'
-import useInterval from '../../hooks/useInterval'
 import { AlertType } from './types'
 import { useController } from '../../controllerContext'
-import { States, StateActions } from '../../types/state'
-
-// espera 0.2 segundo, vibra por meio segundo, espera 0.2 segundo e vibra por meio segundo
-const PATTERN = [200, 500, 200, 500]
+import { States } from '../../types/state'
 
 type AlertValue = {
   alerts: AlertType[]
@@ -14,49 +9,53 @@ type AlertValue = {
   currentAlert?: AlertType
 }
 type AlertProviderProps = {
-  setAlertMsg?: (msg?: string) => void
+  done: boolean
+  setDone: React.Dispatch<React.SetStateAction<boolean>>
+  setAlert?: (alert?: AlertType) => void
 }
 const AlertsContext = createContext<AlertValue | undefined>(undefined)
 
-const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) => {
+const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlert, done, setDone }) => {
   const [alerts, setAlerts] = useState<AlertType[]>([])
   const [currentAlert, setCurrentAlert] = useState<AlertType | undefined>(
     alerts.find(m => m.active),
   )
-  const [{ status }, dispatch] = useController()
+  const [{ status }] = useController()
 
   const isStarted = useMemo(() => status === States.STARTED, [status])
+  const isFinished = useMemo(() => status === States.RESETED || status === States.STOPPED, [status])
 
   useEffect(() => {
-    if (status === States.RESETED && alerts.length) {
-      const alertsCpy = alerts.map(alert => {
-        if (alert.active) {
-          alert.active = false
-        }
-        return alert
+    if (isFinished) {
+      setAlerts(prevAlerts => {
+        const alertsCpy = prevAlerts.map(alert => {
+          if (alert.active) {
+            alert.active = false
+          }
+          return alert
+        })
+        alertsCpy[0].active = true
+        return alertsCpy
       })
-      alertsCpy[0].active = true
-      setAlerts(alertsCpy)
-      setCurrentAlert(alertsCpy[0])
-      setAlertMsg && setAlertMsg(undefined)
-      dispatch({ type: StateActions.STOP })
     }
-  }, [alerts, status, setAlertMsg, dispatch])
+  }, [isFinished])
 
   // Ativa a mensagem com menor tempo ao iniciar/se n houver mensagem ativa
   // TODO não deixar ter mais de uma mensagem ativa
   useEffect(() => {
     if (!alerts.find(m => m.active) && alerts.length > 0) {
-      const msgs = [...alerts]
-      msgs[0].active = true
-      setAlerts(msgs)
+      const alertsCpy = [...alerts]
+      alertsCpy[0].active = true
+      setAlerts(alertsCpy)
     }
   }, [alerts])
 
   useEffect(() => {
     setCurrentAlert(alerts.find(alert => alert.active))
-    isStarted && setAlertMsg!(alerts.find(alert => alert.active)?.msg)
-  }, [alerts, setAlertMsg, isStarted])
+    if (setAlert && (isStarted || isFinished)) {
+      setAlert(alerts.find(alert => alert.active))
+    }
+  }, [alerts, setAlert, isStarted, isFinished])
 
   const setNextActiveAlert = useCallback(() => {
     if (currentAlert && currentAlert.active) {
@@ -69,22 +68,21 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlertMsg }) 
         if (alertIdx + 1 <= alerts.length - 1) {
           alertsCpy[alertIdx + 1].active = true
         } else {
-          // Chegou no final do array, ativa a primeira mensagem (com menor tempo)
+          // Chegou no final do array, ativa a primeira mensagem
           alertsCpy[0].active = true
         }
       }
       setAlerts(alertsCpy)
+      setDone(false)
     }
-  }, [alerts, currentAlert])
+  }, [alerts, currentAlert, setDone])
 
-  // Intervalo da mensagem atual
-  useInterval(
-    () => {
+  // quando done mudar, troca a mensagem atual
+  useEffect(() => {
+    if (done) {
       setNextActiveAlert()
-      Vibration.vibrate(PATTERN)
-    },
-    isStarted && currentAlert ? currentAlert.step * 1000 : undefined,
-  )
+    }
+  }, [done, setNextActiveAlert])
 
   return (
     <AlertsContext.Provider value={{ alerts, setAlerts, currentAlert }}>

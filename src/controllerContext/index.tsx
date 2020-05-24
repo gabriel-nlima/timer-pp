@@ -9,7 +9,7 @@ const ControlStateContext = createContext<ControlState | undefined>(undefined)
 const ControlDispatchContext = createContext<ControlDispatch | undefined>(undefined)
 
 export const ControllerProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer(controlReducer, { status: States.STOPPED })
+  const [state, dispatch] = useReducer(controlReducer, { status: States.IDLE })
   return (
     <ControlStateContext.Provider value={state}>
       <ControlDispatchContext.Provider value={dispatch}>{children}</ControlDispatchContext.Provider>

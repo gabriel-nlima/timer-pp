@@ -1,14 +1,10 @@
-export enum TimerModes {
-  CRON = 'CRON',
-  TIMER = 'TIMER',
-  COUNTDOWN = 'COUNTDOWN',
+import { ReactNode } from 'react'
+import { DrawerNavigationProp } from '@react-navigation/drawer'
+
+export type ScreenProps = {
+  navigation: DrawerNavigationProp<{}>
 }
-export type TimerProps = {
-  mode: TimerModes
-}
-export type DrawerScreens = {
-  Cron: TimerProps
-  Timer: TimerProps
-  Countdown: TimerProps
-  Alerts: undefined
+export interface ScreenWrapperProps extends ScreenProps {
+  bottomContent?: ReactNode
+  title: string
 }

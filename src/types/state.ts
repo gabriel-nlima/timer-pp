@@ -2,7 +2,8 @@ export enum States {
   PAUSED = 'PAUSED',
   STARTED = 'STARTED',
   RESETED = 'RESETED',
-  STOPPED = 'STOPPED', // initial
+  STOPPED = 'STOPPED',
+  IDLE = 'IDLE', // initial
 }
 
 export enum StateActions {

@@ -4,7 +4,9 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { mainTheme, mainColors } from './theme'
-import { TimerScreen, CountdownScreen, CronScreen } from './main/Screens'
+import CronScreen from './main/CronScreen'
+import TimerScreen from './main/TimerScreen'
+import CountdownScreen from './main/CountdownScreen'
 
 const Drawer = createDrawerNavigator()
 
