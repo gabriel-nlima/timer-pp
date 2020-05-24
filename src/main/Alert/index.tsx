@@ -24,18 +24,20 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlert, done,
 
   const isStarted = useMemo(() => status === States.STARTED, [status])
   const isFinished = useMemo(() => status === States.RESETED || status === States.STOPPED, [status])
-
   useEffect(() => {
     if (isFinished) {
       setAlerts(prevAlerts => {
-        const alertsCpy = prevAlerts.map(alert => {
-          if (alert.active) {
-            alert.active = false
-          }
-          return alert
-        })
-        alertsCpy[0].active = true
-        return alertsCpy
+        if (prevAlerts.length > 0) {
+          const alertsCpy = prevAlerts.map(alert => {
+            if (alert && alert.active) {
+              alert.active = false
+            }
+            return alert
+          })
+          alertsCpy[0].active = true
+          return alertsCpy
+        }
+        return prevAlerts
       })
     }
   }, [isFinished])
@@ -45,7 +47,9 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlert, done,
   useEffect(() => {
     if (!alerts.find(m => m.active) && alerts.length > 0) {
       const alertsCpy = [...alerts]
-      alertsCpy[0].active = true
+      if (alerts[0] !== undefined) {
+        alertsCpy[0].active = true
+      }
       setAlerts(alertsCpy)
     }
   }, [alerts])
@@ -60,20 +64,22 @@ const AlertProvider: React.FC<AlertProviderProps> = ({ children, setAlert, done,
   const setNextActiveAlert = useCallback(() => {
     if (currentAlert && currentAlert.active) {
       const alertsCpy = [...alerts]
-      const alertIdx = alertsCpy.findIndex(m => m.active)
-      if (alertIdx > -1) {
-        // Desativa a mensagem atual e ativa a próxima
-        alertsCpy[alertIdx].active = false
+      if (alertsCpy.length > 0) {
+        const alertIdx = alertsCpy.findIndex(m => m.active)
+        if (alertIdx > -1) {
+          // Desativa a mensagem atual e ativa a próxima
+          alertsCpy[alertIdx].active = false
 
-        if (alertIdx + 1 <= alerts.length - 1) {
-          alertsCpy[alertIdx + 1].active = true
-        } else {
-          // Chegou no final do array, ativa a primeira mensagem
-          alertsCpy[0].active = true
+          if (alertIdx + 1 <= alerts.length - 1) {
+            alertsCpy[alertIdx + 1].active = true
+          } else {
+            // Chegou no final do array, ativa a primeira mensagem
+            alertsCpy[0].active = true
+          }
         }
+        setAlerts(alertsCpy)
+        setDone(false)
       }
-      setAlerts(alertsCpy)
-      setDone(false)
     }
   }, [alerts, currentAlert, setDone])
 
