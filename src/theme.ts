@@ -7,6 +7,7 @@ export const mainColors = {
   lightBLue: '#4169E1',
   darkSlateBlue: '#483D8B',
   black: '#000000',
+  red: '#B22222',
 }
 
 export const fontSizes = {

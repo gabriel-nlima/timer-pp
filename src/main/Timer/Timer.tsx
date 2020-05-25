@@ -19,6 +19,7 @@ interface Props {
 }
 const Timer: React.FC<Props> = ({ setLoops, setDone, alert }) => {
   const [time, setTime] = useState(0)
+  const [alertTime, setAlertTime] = useState(0)
   const [maxTime, setMaxTime] = useState(0)
   const lastStep = useRef(0)
   const [{ status }, dispatch] = useController()
@@ -29,10 +30,13 @@ const Timer: React.FC<Props> = ({ setLoops, setDone, alert }) => {
     if (alert) {
       if (isFinished) {
         lastStep.current = alert.step
+        setAlertTime(0)
       } else if (lastStep.current === 0) {
         lastStep.current = time + alert.step
+        setAlertTime(0)
       } else {
         lastStep.current = time + alert.step + 1
+        setAlertTime(0)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,9 +51,10 @@ const Timer: React.FC<Props> = ({ setLoops, setDone, alert }) => {
   useInterval(
     () => {
       if (lastStep.current > 0 && time + 1 === lastStep.current) {
+        setAlertTime(alert?.step || 0)
         setDone(true)
         Vibration.vibrate(VIBRATION_PATTERN_ALERT)
-      }
+      } else setAlertTime(alertTime + 1)
 
       if (maxTime > 0 && maxTime === time + 1) {
         dispatch({ type: StateActions.STOP })
@@ -65,6 +70,7 @@ const Timer: React.FC<Props> = ({ setLoops, setDone, alert }) => {
   const resetTimer = useCallback(() => {
     setTime(0)
     setLoops([])
+    setAlertTime(0)
   }, [setLoops])
 
   return (
@@ -76,9 +82,24 @@ const Timer: React.FC<Props> = ({ setLoops, setDone, alert }) => {
           tintColor={mainColors.lightBLue}
           fill={maxTime > 0 ? (time / maxTime) * 100 : 0}
           backgroundColor={mainColors.lightGrey}
-          rotation={180}
+          rotation={360}
         >
-          {() => <DisplayTime time={time} />}
+          {() =>
+            alert ? (
+              <AnimatedCircularProgress
+                size={255}
+                width={5}
+                tintColor={mainColors.red}
+                fill={alert.step > 0 ? (alertTime / (alert.step - 1)) * 100 : 0}
+                backgroundColor={mainColors.lightGrey}
+                rotation={360}
+              >
+                {() => <DisplayTime time={time} />}
+              </AnimatedCircularProgress>
+            ) : (
+              <DisplayTime time={time} />
+            )
+          }
         </AnimatedCircularProgress>
       </Container>
       <TimerForm
